@@ -1,0 +1,123 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "gridPos": {
+        "h": 5,
+        "w": 19,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "SVGBaseFix": true,
+        "add100Percentage": true,
+        "centerAlignContent": true,
+        "codeData": "{\n  \"text\": \"Random text\"\n}",
+        "css": "* {\n  font-family: Open Sans;\n}\n\n.box {\n  border: solid #555 2px;\n  border-radius: 10px;\n  padding: 10px 20px;\n}\n\n#disable-button {\n  margin-left: 20px;\n}",
+        "dynamicData": false,
+        "html": "<div style=\"text-align: center;\">\n\n    <table>\n      <tr height=\"10px\" width=\"100%\">\n        <td>\n          <span style=\"font-family:Arial;font-weight:bold;font-size:46px;color:white;text-align: center;vertical-align:middle\">\n            Defect Detection \n          </span>\n        </td>\n        <!-- <td>\n          <button id=\"disable-button\">Disable PLC Integration</button>\n        </td> -->\n      </tr>\n    </table>\n    \n    <table width=\"100%\">\n      <tr width=\"100%\">\n        <td width=\"100%\">\n        <table width=\"100%\">\n          <tr width=\"100%\">\n            <td>\n              <div style=\"font-family:Arial;font-weight:bold;font-size:40px;color:lightblue;text-align: left;\">\n                Inhaler Detection Demo\n              </div>\n              \n            </td>\n    \n            <td style=\"float:right; width:100%\">\n              <div style=\"font-family:Arial;font-size:22px;color:limegreen;text-align:left;\">\n                Total Passed: <div style=\"display: inline-block;\" id=\"total-passed-1\">\n              </div>\n              <br/>\n              <div style=\"font-family:Arial;font-size:22px;color:red;text-align:left;\">\n                Total Failed: <div style=\"display: inline-block;\" id=\"total-failed-1\"></div> \n              </div>\n            </td>      \n          </tr>\n        </table>\n        </td>\n    \n      </tr>\n    \n    </table>\n    <br/>\n    <!-- STATUS START -->\n    <table width=\"100%\" style=\"float:left\">\n    \n      <tr>\n      <td><div style=\"font-family:Arial;font-weight:bold;font-size:28px;color:black;background:white;text-align: center;vertical-align:middle\" id=\"statusbar\"><div id=\"status\">Status</div></div></td>\n      </tr>\n    \n    </table>\n    <!-- STATUS END -->\n    \n    <div>\n    <!-- Cap detection start -->\n    <table width=\"60%\" style=\"float:left\">\n      <tr>\n      <td><div style=\"font-family:Arial;font-weight:bold;font-size:28px;color:white;background:blue;text-align: center;vertical-align:middle\"><div id=\"defect\">WHITE</div></div></td>\n      </tr>\n      <tr>\n      <td><div style=\"align:center;vertical-align: middle;\"><canvas id=\"imagecanvas-1\">Your browser does not support the HTML5 canvas tag.</canvas></div></td>\n      </tr>\n    \n    </table>\n    \n    \n    <table width=\"40%\" style=\"float:left\">\n      \n      <tr>\n      <td><div style=\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: left;\">Confidence: <div style=\"display: inline-block;\" id=\"confidence-1\"></div>%</div></td>\n      </tr>\n    \n      <tr>\n      <td><div style=\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: left;\">Time: <div style=\"display: inline-block;\" id=\"capture-time-1\"></div></div></td>\n      </tr>\n    \n      <tr>\n      <td><div style=\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: left;\">Inference Time: <div style=\"display: inline-block;\" id=\"time-1\"></div>ms</div></td>\n      </tr>\n    \n    </table>\n    <!-- Cap detection end -->\n    \n    <!-- Datecode start -->\n    \n    </div>\n    <!-- Datecode end -->\n    \n    \n    \n    </div>\n    <!-- Label Quality Detection end -->\n    </div>\n    ",
+        "importedPanelOptions": "{\n    \"add100Percentage\": true,\n    \"centerAlignContent\": true,\n    \"overflow\": \"visible\",\n    \"SVGBaseFix\": true,\n    \"codeData\": \"{\\n  \\\"text\\\": \\\"Random text\\\"\\n}\",\n    \"css\": \"* {\\n  font-family: Open Sans;\\n}\\n\\n.box {\\n  border: solid #555 2px;\\n  border-radius: 10px;\\n  padding: 10px 20px;\\n}\\n\",\n    \"html\": \"<div style=\\\"text-align: center;\\\">\\n\\n<table>\\n  <tr height=\\\"10px\\\">\\n    <td><span style=\\\"font-family:Arial;font-weight:bold;font-size:46px;color:white;text-align: center;vertical-align:middle\\\">Supply Chain Quality Defect Detection</span></td>\\n  </tr>\\n</table>\\n\\n<table width=\\\"100%\\\">\\n  <tr>\\n    <td width=\\\"800px\\\">\\n    <table>\\n      <tr><td><div style=\\\"font-family:Arial;font-weight:bold;font-size:40px;color:lightblue;text-align: left;\\\">LPQK-531</div></td></tr>\\n\\n      <tr><td><div style=\\\"font-family:Arial;font-size:28px;color:green;text-align: left;\\\">Total Passed: <div style=\\\"display: inline-block;\\\" id=\\\"total-passed-1\\\"></div></div></td></tr>\\n\\n      <tr><td><div style=\\\"font-family:Arial;font-size:28px;color:red;text-align: left;\\\">Total Failed: <div style=\\\"display: inline-block;\\\" id=\\\"total-failed-1\\\"></div></div></td></tr>\\n    </table>\\n    </td>\\n\\n  </tr>\\n\\n</table>\\n<br/>\\n\\n<div>\\n<table width=\\\"33%\\\" style=\\\"float:left\\\">\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Cap Detector</div></td>\\n  </tr>\\n  \\n  <tr>\\n  <td><div style=\\\"align:center;vertical-align: middle;\\\"><canvas id=\\\"imagecanvas-1\\\">Your browser does not support the HTML5 canvas tag.</canvas></div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Confidence: <div style=\\\"display: inline-block;\\\" id=\\\"confidence-1\\\"></div>%</div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Time: <div style=\\\"display: inline-block;\\\" id=\\\"capture-time-1\\\"></div></div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Inference Time: <div style=\\\"display: inline-block;\\\" id=\\\"time-1\\\"></div>ms</div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:28px;color:white;background:blue;text-align: center;vertical-align:middle\\\"><div id=\\\"cap-color\\\">WHITE</div></div></td>\\n  </tr>\\n\\n</table>\\n<!-- Datecode start -->\\n<table width=\\\"33%\\\" style=\\\"float:left\\\">\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Date Code Detector</div></td>\\n  </tr>\\n  \\n  <tr>\\n  <td><div style=\\\"align:center;vertical-align: middle;\\\"><canvas id=\\\"imagecanvas-2\\\">Your browser does not support the HTML5 canvas tag.</canvas></div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Confidence: <div style=\\\"display: inline-block;\\\" id=\\\"confidence-2\\\"></div>%</div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Time: <div style=\\\"display: inline-block;\\\" id=\\\"capture-time-2\\\"></div></div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Inference Time: <div style=\\\"display: inline-block;\\\" id=\\\"time-2\\\"></div>ms</div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:28px;color:white;background:blue;text-align: center;vertical-align:middle\\\"><div id=\\\"datecode-text\\\"></div></div></td>\\n  </tr>\\n\\n</table>\\n</div>\\n<!-- Datecode end -->\\n\\n<!-- Label ID start -->\\n<table width=\\\"33%\\\" style=\\\"float:left\\\">\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Label ID Detector</div></td>\\n  </tr>\\n  \\n  <tr>\\n  <td><div style=\\\"align:center;vertical-align: middle;\\\"><canvas id=\\\"imagecanvas-3\\\">Your browser does not support the HTML5 canvas tag.</canvas></div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Confidence: <div style=\\\"display: inline-block;\\\" id=\\\"confidence-3\\\"></div>%</div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Time: <div style=\\\"display: inline-block;\\\" id=\\\"capture-time-3\\\"></div></div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:20px;color:white;text-align: center;\\\">Inference Time: <div style=\\\"display: inline-block;\\\" id=\\\"time-3\\\"></div>ms</div></td>\\n  </tr>\\n\\n  <tr>\\n  <td><div style=\\\"font-family:Arial;font-weight:bold;font-size:28px;color:white;background:blue;text-align: center;vertical-align:middle\\\"><div id=\\\"label-id-text\\\"></div></div></td>\\n  </tr>\\n\\n</table>\\n</div>\\n<!-- Label ID end -->\\n</div>\\n\",\n    \"renderOnMount\": true,\n    \"onRender\": \"\\nfunction loadImageFromFile(url, canvaselement)\\n{\\n    // Create an image object. This is not attached to the DOM and is not part of the page.\\n    var image = new Image();\\n    image.canvaselement=canvaselement;\\n\\n    // When the image has loaded, draw it to the canvas\\n    image.onload = function()\\n    {\\n      var imagecanvas = htmlNode.getElementById(this.canvaselement);\\n      imagecanvas.width=300;//this.width;\\n      imagecanvas.height=300;//this.height; \\n      var ctx = imagecanvas.getContext(\\\"2d\\\");\\n      ctx.drawImage(this, 0, 0, this.width,this.height, //source rectangle\\n      0, 0, imagecanvas.width,imagecanvas.height ); //dest rectangle\\n    }\\n\\n    // Now set the source of the image that we want to load\\n    image.src = url;\\n}\\n\\nvar capcolor=htmlNode.getElementById('cap-color');\\ncapcolor.textContent=data.series[0].fields[2].values.get(0);\\ncapcolor.style.color=data.series[0].fields[2].values.get(0);\\n\\nvar confidence=htmlNode.getElementById('confidence-1');\\nconfidence.textContent = data.series[0].fields[1].values.get(0);\\n\\n\\nvar dataImagePath;\\ndataImagePath=data.series[0].fields[0].values.get(0)\\nloadImageFromFile('/public/img/'.concat(dataImagePath), 'imagecanvas-1');\\n\\nvar frametime=htmlNode.getElementById('capture-time-1');\\n//ar capfileparts = dataImagePath.split('_');\\nframetime.textContent = data.series[0].fields[4].values.get(0);;\\n\\nvar time=htmlNode.getElementById('time-1');\\ntime.textContent = data.series[0].fields[3].values.get(0);\\n\\n//Datecode Edit\\nvar datecode_text=htmlNode.getElementById('datecode-text');\\ndatecode_text.textContent=data.series[1].fields[3].values.get(0);\\n\\nvar datecode_confidence=htmlNode.getElementById('confidence-2');\\ndatecode_confidence.textContent = data.series[1].fields[1].values.get(0);\\n\\nvar datecodeImagePath;\\ndatecodeImagePath=data.series[1].fields[0].values.get(0)\\nloadImageFromFile('/public/img/'.concat(datecodeImagePath), 'imagecanvas-2');\\n\\nvar frametime=htmlNode.getElementById('capture-time-2');\\n// var datecodeParts = datecodeImagePath.split('_')\\nframetime.textContent = data.series[1].fields[7].values.get(0);\\n\\nvar datecode_time=htmlNode.getElementById('time-2');\\ndatecode_time.textContent = data.series[1].fields[2].values.get(0);\\n\\n//Label ID Edit\\nvar label_id_text=htmlNode.getElementById('label-id-text');\\nlabel_id_text.textContent=data.series[1].fields[4].values.get(0) != \\\"\\\" ? data.series[1].fields[4].values.get(0) : \\\"Label ID Not Found\\\";\\n\\nvar label_id_confidence=htmlNode.getElementById('confidence-3');\\nlabel_id_confidence.textContent = data.series[1].fields[5].values.get(0);\\n\\nvar labelIDImagePath;\\nlabelIDImagePath=data.series[1].fields[6].values.get(0)\\nloadImageFromFile('/public/img/'.concat(labelIDImagePath), 'imagecanvas-3');\\n\\nvar frametime=htmlNode.getElementById('capture-time-3');\\nframetime.textContent = data.series[1].fields[7].values.get(0);\\n//var labelIDParts = labelIDImagePath.split('_')?\\n//filename.textContent =  labelIDParts.length <5 ? labelIDParts[0] + \\\"_\\\" + labelIDParts[1] + \\\"...\\\" + labelIDParts[3] : labelIDParts[0] + \\\"_\\\" + labelIDParts[1] + \\\"...\\\" + labelIDParts[4];\\n// {\\n// filename.textContent = labelIDParts[0] + \\\"_\\\" + labelIDParts[1] + \\\"...\\\" + labelIDParts[3];\\n// }\\n// else{\\n//   filename.textContent = labelIDParts[0] + \\\"_\\\" + labelIDParts[1] + \\\"...\\\" + labelIDParts[4];\\n// }\\nvar label_id_time=htmlNode.getElementById('time-3');\\nlabel_id_time.textContent = data.series[1].fields[2].values.get(0);\\n\\nvar total_passed = htmlNode.getElementById('total-passed-1');\\ntotal_passed.textContent = data.series[2].fields[0].values.get(0);\\n\\nvar total_failed = htmlNode.getElementById('total-failed-1');\\ntotal_failed.textContent = data.series[2].fields[1].values.get(0);\",\n    \"dynamicData\": false,\n    \"panelupdateOnMount\": true,\n    \"onInit\": \"// Sets the text from customProperties\\nconst htmlgraphicsText = htmlNode.getElementById('htmlgraphics-text');\\n\\nif (htmlgraphicsText) {\\n  htmlgraphicsText.textContent = customProperties.text;\\n\\n  // Change the text color based on the theme\\n  if (theme.isDark) {\\n    htmlgraphicsText.style.color = 'green';\\n  } else {\\n    htmlgraphicsText.style.color = 'red';\\n  }\\n}\\n\"\n}",
+        "onInit": "// Sets the text from customProperties\nconst htmlgraphicsText = htmlNode.getElementById('htmlgraphics-text');\n\nif (htmlgraphicsText) {\n  htmlgraphicsText.textContent = customProperties.text;\n\n  // Change the text color based on the theme\n  if (theme.isDark) {\n    htmlgraphicsText.style.color = 'green';\n  } else {\n    htmlgraphicsText.style.color = 'red';\n  }\n}\n",
+        "onRender": "function loadImageFromFile(url, canvaselement) {\n    // Create an image object. This is not attached to the DOM and is not part of the page.\n    var image = new Image();\n    image.canvaselement = canvaselement;\n\n    // When the image has loaded, draw it to the canvas\n    image.onload = function () {\n        var imagecanvas = htmlNode.getElementById(this.canvaselement);\n        imagecanvas.width = (this.width); //300 \n        imagecanvas.height = (this.height); //300\n        var ctx = imagecanvas.getContext(\"2d\");\n        ctx.drawImage(this, 0, 0, this.width, this.height, //source rectangle\n            0, 0, imagecanvas.width, imagecanvas.height); //dest rectangle\n    }\n    image.src = url;\n    }\n\n\nvar defect = htmlNode.getElementById('defect');\ndefect.textContent = data.series[0].fields[3].values.get(0);\n// defect.style.color = data.series[0].fields[2].values.get(0);\n// console.log(data)\nvar confidence = htmlNode.getElementById('confidence-1');\nconfidence.textContent = data.series[0].fields[4].values.get(0);\n\nvar dataImagePath = data.series[0].fields[0].values.get(0);\n\nif (confidence.textContent.toString()!=\"-1\") {\n    loadImageFromFile('/public/annotated-img/'.concat(dataImagePath), 'imagecanvas-1');\n} else {\n    loadImageFromFile('/public/raw-img/'.concat(dataImagePath), 'imagecanvas-1');\n}\n\n\nvar frametime = htmlNode.getElementById('capture-time-1');\nframetime.textContent = data.series[0].fields[2].values.get(0);\n\nvar time = htmlNode.getElementById('time-1');\ntime.textContent = Math.round(1e3*data.series[0].fields[1].values.get(0))/1e3;\n\n/**\n * Tags\n */\n\n// var prediction_tags = htmlNode.getElementById('prediction-tags')\n// var pred_text = \"\"\n// for (let i=0; i< data.series[0].fields[1].values; i++){\n//  pred_text += data.series[0].fields[3].values.get(i).toString() + \" | Confidence: \" + data.series[0].fields[4].values.get(i).toString() + \"</br>\";\n// }\n// prediction_tags.textContent = pred_text;\n/**\n * Status Bar\n */\nvar total_passed = htmlNode.getElementById('total-passed-1');\ntotal_passed.textContent = data.series[1].fields[1].values.get(0);\n\nvar total_failed = htmlNode.getElementById('total-failed-1');\ntotal_failed.textContent = data.series[1].fields[0].values.get(0);\n\nvar status_state = data.series[2].fields[0].values.get(0);\nvar status_message = data.series[2].fields[1].values.get(0);\nvar status = htmlNode.getElementById('status');\nstatus.textContent = \"Status: \" + status_state + \" - \" + status_message;\n\nvar statusbar = htmlNode.getElementById('statusbar');\nvar success_style = \"font-family:Arial;font-weight:bold;font-size:28px;color:white;background:green;text-align: center;vertical-align:middle\";\nvar fail_style = \"font-family:Arial;font-weight:bold;font-size:28px;color:white;background:red;text-align: center;vertical-align:middle\";\nstatusbar.style = status_state == 'Succeeded' ? success_style : fail_style;",
+        "overflow": "visible",
+        "panelupdateOnMount": true,
+        "renderOnMount": true
+      },
+      "pluginVersion": "7.5.4",
+      "targets": [
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "P04DFAF2B8BCC8499"
+          },
+          "format": "table",
+          "queryType": "randomWalk",
+          "rawSql": "SELECT top(1) a.annotated_image_name, a.inferencing_time, CONVERT(VARCHAR(26), dateadd(hour, -6, a.created), 109), b.tag_name, b.probability FROM InferenceData as a JOIN DetectionData as b on a.unique_id=b.unique_id ORDER BY a.created DESC",
+          "refId": "A"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "P04DFAF2B8BCC8499"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "SELECT TOP 1000 SUM(CASE WHEN object_detected=1 THEN 1 ELSE 0 END) Succeeded, SUM(CASE WHEN object_detected=0 THEN 1 ELSE 0 END) Failed FROM InferenceData WHERE created > DATEADD(day, -1, GETDATE())",
+          "refId": "B"
+        },
+        {
+          "alias": "",
+          "datasource": {
+            "type": "mssql",
+            "uid": "P04DFAF2B8BCC8499"
+          },
+          "format": "table",
+          "hide": false,
+          "rawSql": "select top(1) (CASE WHEN object_detected=1 THEN 'Failed' ELSE 'Succeeded' END) as status, (CASE WHEN object_detected=1 THEN 'Objects Detected' ELSE 'No Objects Detected' END) as status_message from InferenceData order by created desc",
+          "refId": "C"
+        }
+      ],
+      "type": "gapit-htmlgraphics-panel"
+    }
+  ],
+  "refresh": "1s",
+  "schemaVersion": 34,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "100ms",
+      "500ms",
+      "1s",
+      "5s",
+      "10s",
+      "30s",
+      "1m",
+      "5m",
+      "15m",
+      "30m",
+      "1h",
+      "2h",
+      "1d"
+    ]
+  },
+  "timezone": "",
+  "title": "Demo Dashboard",
+  "uid": "KmWNovA7z",
+  "version": 1,
+  "weekStart": ""
+}

@@ -1,0 +1,7 @@
+Blue Plug Loose
+Data Plate Missing
+Fluid Plate Missing
+Lockwire Backwards
+Loose Bolt
+Pump Defective
+Pump OK

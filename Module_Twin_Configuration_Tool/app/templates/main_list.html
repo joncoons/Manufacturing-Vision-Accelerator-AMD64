@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}Azure IoT Edge Devices & Modules {% endblock %}</h1>
+    {% for i in range(d_count)%}
+        <h3>{{ d[i]['deviceId']|upper }}</h3>
+        {% for x in range(dm_count) %}
+            {% if d[i]['deviceId'] == dm[x]['deviceId'] %}
+            <a href="{{ url_for('twin_config', deviceId=d[i]['deviceId'], moduleId=dm[x]['moduleId'], config=config_file)}}">
+            <h5>{{ dm[x]['moduleId'] }}</h5>
+            </a>
+            {% endif %}
+        {% endfor %}    
+        <hr>
+    {% endfor %}
+{% endblock %}

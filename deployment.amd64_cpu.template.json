@@ -1,0 +1,440 @@
+{
+  "$schema-template": "4.0.0",
+  "modulesContent": {
+    "$edgeAgent": {
+      "properties.desired": {
+        "schemaVersion": "1.1",
+        "runtime": {
+          "type": "docker",
+          "settings": {
+            "minDockerVersion": "v1.25",
+            "loggingOptions": "",
+            "registryCredentials": {
+              "aiotdevopsacr": {
+                "username": "${ACR_UNAME}",
+                "password": "${ACR_PWD}",
+                "address": "${ACR_ADDR}"
+              }
+            }
+          }
+        },
+        "systemModules": {
+          "edgeAgent": {
+            "type": "docker",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.2.6-linux-amd64",
+              "createOptions": {
+                "HostConfig": {
+                  "Binds": [
+                    "/home/edge_assets/edge_agent_volume:/edge_agent_volume"
+                  ]
+                }
+              }
+            },
+            "env": {
+              "storageFolder": {
+                "value": "edge_agent_volume"
+              }
+            }
+          },
+          "edgeHub": {
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.2.6-linux-amd64",
+              "createOptions": {
+                "HostConfig": {
+                  "Binds": [
+                    "/home/edge_assets/edge_hub_volume:/edge_hub_volume"
+                  ],
+                  "PortBindings": {
+                    "5671/tcp": [
+                      {
+                        "HostPort": "5671"
+                      }
+                    ],
+                    "8883/tcp": [
+                      {
+                        "HostPort": "8883"
+                      }
+                    ],
+                    "443/tcp": [
+                      {
+                        "HostPort": "443"
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "env": {
+              "storageFolder": {
+                "value": "edge_hub_volume"
+              }
+            }
+          }
+        },
+        "modules": {
+          "Mfg_Vision_CIS_Camera_1": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_CIS_Camera_1}",
+              "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "HostConfig": {
+                  "IpcMode": "host",
+                  "NetworkMode": "host",
+                  "Binds": [
+                    "/home/edge_assets/images_volume:/images_volume",
+                    "/home/edge_assets/model_volume:/model_volume",
+                    "/home/edge_assets/image_sink_volume/1:/image_sink_volume"
+                  ],
+                  "Mounts": [
+                    {
+                      "Type": "volume",
+                      "Source": "images_volume",
+                      "Target": "/var/opt/images_volume"
+                    },
+                    {
+                      "Type": "volume",
+                      "Source": "model_volume",
+                      "Target": "/var/opt/model_volume"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "Mfg_Vision_CIS_Camera_2": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_CIS_Camera_2}",
+              "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "HostConfig": {
+                  "IpcMode": "host",
+                  "NetworkMode": "host",
+                  "Binds": [
+                    "/home/edge_assets/images_volume:/images_volume",
+                    "/home/edge_assets/model_volume:/model_volume",
+                    "/home/edge_assets/image_sink_volume/2:/image_sink_volume"
+                  ],
+                  "Mounts": [
+                    {
+                      "Type": "volume",
+                      "Source": "images_volume",
+                      "Target": "/var/opt/images_volume"
+                    },
+                    {
+                      "Type": "volume",
+                      "Source": "model_volume",
+                      "Target": "/var/opt/model_volume"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "Mfg_Vision_Model_Repo": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_Model_Repo}",
+              "createOptions": {
+                "HostConfig": {
+                  "Binds": [
+                    "/home/edge_assets/model_volume:/model_volume"
+                  ]
+                },
+                "Mounts": [
+                  {
+                    "Type": "volume",
+                    "Source": "model_volume",
+                    "Target": "/var/opt/model_volume"
+                  }
+                ]
+              }
+            }
+          },
+          "Mfg_Vision_Image_Upload": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_Image_Upload}",
+              "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "HostConfig": {
+                  "NetworkMode": "host",
+                  "Binds": [
+                    "/home/edge_assets/images_volume:/images_volume"
+                  ],
+                  "Mounts": [
+                    {
+                      "Type": "volume",
+                      "Source": "images_volume",
+                      "Target": "/var/opt/images"
+                    }
+                  ]
+                }
+              }
+            },
+            "env": {
+              "ADL_G2": {
+                "value": "false"
+              },
+              "STORE_CONN_STR": {
+                "value": "${BLOB_CONN_STR}"
+              }
+            }
+          },
+          "Mfg_Vision_File_Cleanup": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_File_Cleanup}",
+              "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "HostConfig": {
+                  "NetworkMode": "host",
+                  "Binds": [
+                    "/home/edge_assets/images_volume:/images_volume"
+                  ],
+                  "Mounts": [
+                    {
+                      "Type": "volume",
+                      "Source": "images_volume",
+                      "Target": "/var/opt/images_volume"
+                    }
+                  ]
+                }
+              }
+            },
+            "env": {
+              "RETENTION_POLICY_SECONDS": {
+                "value": "7200"
+              }
+            }
+          },
+          "SQL_on_Edge": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "mcr.microsoft.com/azure-sql-edge/developer:latest",
+              "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "HostConfig": {
+                  "NetworkMode": "host",
+                  "CapAdd": [
+                    "SYS_PTRACE"
+                  ],
+                  "Binds": [
+                    "sqlvol10:/sqlvol1"
+                  ],
+                  "PortBindings": {
+                    "1433/tcp": [
+                      {
+                        "HostPort": "1433"
+                      }
+                    ]
+                  },
+                  "Mounts": [
+                    {
+                      "Type": "volume",
+                      "Source": "sqlvol1",
+                      "Target": "/var/opt/mssql"
+                    }
+                  ]
+                },
+                "Env": [
+                  "MSSQL_AGENT_ENABLED=TRUE",
+                  "ClientTransportType=AMQP_TCP_Only",
+                  "PlanId=asde-developer-on-iot-edge"
+                ]
+              }
+            },
+            "env": {
+              "ACCEPT_EULA": {
+                "value": "Y"
+              },
+              "MSSQL_SA_PASSWORD": {
+                "value": "Pa$$word321"
+              },
+              "MSSQL_LCID": {
+                "value": "1033"
+              },
+              "MSSQL_COLLATION": {
+                "value": "SQL_Latin1_General_CP1_CI_AS"
+              }
+            }
+          },
+          "Mfg_Vision_Dashboard_Grafana": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_Dashboard_Grafana}",
+              "createOptions": {
+                "Env": [
+                  "GF_SECURITY_ADMIN_PASSWORD=Pa$$word321"
+                ],
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "Volumes": {
+                  "/etc/grafana/provisioning": {}
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "3000/tcp": [
+                      {
+                        "HostPort": "3000"
+                      }
+                    ]
+                  },
+                  "NetworkMode": "host",
+                  "Binds": [
+                    "/home/edge_assets/images_volume:/usr/share/grafana/public/images"
+                  ],
+                  "Mounts": [
+                    {
+                      "Type": "volume",
+                      "Source": "images_volume",
+                      "Target": "/var/opt/images_volume"
+                    }
+                  ]
+                }
+              }
+            },
+            "env": {
+              "GF_SERVER_PROTOCOL": {
+                "value": "http"
+              },
+              "GF_DASHBOARDS_MIN_REFRESH_INTERVAL": {
+                "value": "100ms"
+              },
+              "GF_DOMAIN": {
+                "value": "localhost"
+              }
+            }
+          },
+          "Mfg_Vision_Dashboard_Custom": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_Dashboard_Custom}",
+              "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "80/tcp": [
+                      {
+                        "HostPort": "22000"
+                      }
+                    ]
+                  },
+                  "IpcMode": "host",
+                  "NetworkMode": "host",
+                  "Binds": [
+                    "/home/edge_assets/images_volume:/app/static/images"
+                  ],
+                  "Mounts": [
+                    {
+                      "Type": "volume",
+                      "Source": "images_volume",
+                      "Target": "/var/opt/images_volume"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "Mfg_Vision_Twin_Configuration_Tool": {
+            "version": "1.0",
+            "type": "docker",
+            "status": "running",
+            "restartPolicy": "always",
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_Twin_Configuration_Tool}",
+              "createOptions": {
+                "NetworkingConfig": {
+                  "EndpointsConfig": {
+                    "host": {}
+                  }
+                },
+                "HostConfig": {
+                  "PortBindings": {
+                    "80/tcp": [
+                      {
+                        "HostPort": "23000"
+                      }
+                    ]
+                  },
+                  "IpcMode": "host",
+                  "NetworkMode": "host"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "$edgeHub": {
+      "properties.desired": {
+        "schemaVersion": "1.1",
+        "routes": {
+          "Mfg_Vision_CIS_Camera_1_Inference_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_1/outputs/outputInference INTO $upstream",
+          "Mfg_Vision_CIS_Camera_2_Inference_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_2/outputs/outputInference INTO $upstream",
+          "Mfg_Vision_CIS_Camera_1_Image_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_1/outputs/outputImageSend INTO BrokeredEndpoint(\"/modules/Mfg_Vision_Image_Upload/inputs/inputImageSend\")",
+          "Mfg_Vision_CIS_Camera_2_Image_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_2/outputs/outputImageSend INTO BrokeredEndpoint(\"/modules/Mfg_Vision_Image_Upload/inputs/inputImageSend\")"
+        },
+        "storeAndForwardConfiguration": {
+          "timeToLiveSecs": 7200
+        }
+      }
+    }
+  }
+}

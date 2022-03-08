@@ -1,0 +1,32 @@
+# FROM ubuntu:18.04 as base
+# RUN apt update && apt install -y --no-install-recommends \
+#     wget zip unzip
+# RUN mkdir /grafana_downloads && cd /grafana_downloads && mkdir unzipped
+
+# RUN cd /grafana_downloads && wget --no-check-certificate https://github.com/gapitio/gapit-htmlgraphics-panel/releases/download/v2.0.1/gapit-htmlgraphics-panel-2.0.1.zip && unzip *.zip -d /grafana_downloads/unzipped
+
+FROM grafana/grafana-enterprise:latest-ubuntu
+
+USER root
+ARG DEBIAN_FRONTEND=noninteractive
+ARG GF_GID="0"
+ENV GF_PATHS_PLUGINS="/var/lib/grafana-plugins"
+
+RUN mkdir -p "$GF_PATHS_PLUGINS" && \
+    chmod -R 777 "$GF_PATHS_PLUGINS"
+
+COPY grafana-provisioning/ /etc/grafana/provisioning
+
+RUN grafana-cli \
+    --pluginsDir "$GF_PATHS_PLUGINS" \
+    --pluginUrl https://github.com/gapitio/gapit-htmlgraphics-panel/releases/download/v1.3.3/gapit-htmlgraphics-panel-1.3.3.zip \
+    plugins install gapit-htmlgraphics-panel;
+
+RUN mkdir -p /usr/share/grafana/public/images && chmod -R 777 /usr/share/grafana/public/images
+
+EXPOSE 3000
+
+# COPY --from=base /grafana_downloads/unzipped/ /var/lib/grafana/plugins/
+
+
+

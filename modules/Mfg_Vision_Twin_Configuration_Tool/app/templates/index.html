@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>{% block title %}IoT Edge Vision Configuration Tool{% endblock %}</h1>
+    {% for config in config_list %}
+      <p class="lead">Choose a configuration file below:</p>
+      <p> </p>
+      <table width="1280">
+          <tr>
+                <td width="320" >
+                    <a href="{{ url_for('main_list', config=config['file_name']) }}">
+                        <h3>{{ config['base_name'] }}</h3>
+                    </a>
+                </td>
+                <td> 
+                    <a href="{{ url_for('svc_config', action=edit, config=config['file_name']) }}">
+                        <h5>Edit Configuration</h5>
+                    </a>
+                </td>
+                <td> 
+                    <a href="{{ url_for('svc_config', action=delete, config=config['file_name']) }}">
+                        <h5>Delete Configuration</h5>
+                    </a>
+                </td>
+                <td> 
+                    <a href="{{ url_for('svc_config', action=new) }}">
+                        <h5>Add New Configuration</h5>
+                    </a>
+                </td>
+          </tr>
+      </table>
+        
+        <br>
+        <hr>
+    {% endfor %}
+{% endblock %}

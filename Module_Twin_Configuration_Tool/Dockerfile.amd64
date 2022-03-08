@@ -1,0 +1,28 @@
+# Written by Jon Coons, Azure AI GBB at Microsoft.
+# To build the container, run the following line in a WSL2 terminal, or drop the sudo and run in PowerShell
+# sudo docker build -f Dockerfile.amd64 -t <your acr name>.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64 . && sudo docker push <your acr name>.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64
+# You can skip the docker push if you only need a local copy.
+# To run, simply execute 'sudo docker run -d -p 22000:22000 --rm -it visionaccelerator.azurecr.io.azurecr.io/iot_edge_configuration_tool_local:0.0.1-amd64'.  The container will open up ephemeral port 22394, so use a browser to navigate to http://localhost:22000 if running locally.
+# 
+#  You can also run this locally by executing 'python3 aiot_edge_config.py' from the /app folder
+
+FROM amd64/python:3.7-slim-buster
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends \
+    mlocate \
+    python3-pip \
+    python3-dev 
+
+RUN python3 -m pip install --upgrade pip setuptools wheel
+RUN python3 -m pip install --upgrade flask flask_bootstrap Flask-WTF WTForms pydocumentdb
+RUN python3 -m pip install --pre azure-cosmos azure-iot-hub
+
+WORKDIR /app
+
+COPY /app/ .
+
+EXPOSE 22000
+
+CMD [ "python3", "-u", "./aiot_edge_config.py" ]

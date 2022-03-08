@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>{% block title %}Azure IoT Edge Inference Outputs {% endblock %}</h1>
+
+<table width="1200">
+    <tr>
+        <th width=25%></th> 
+        <th width=25%></th> 
+        <th width=25% text-align="right" text-color="03690c"><h5>Total Passed: {{ p }}</h5></th> 
+        <th width=25% text-align="right" text-color="af0202"><h5>Total Failed: {{ f }}</h5></th> 
+    </tr>
+    <tr>
+        {% for i in range(inf_count) %}
+        <td valign="top">
+            <a href="{{ url_for('static', filename = 'images/'+inf_list[i]['annotated_image_name']) }}"><img src="{{ url_for('static', filename = 'images/'+inf_list[i]['annotated_image_name'] | default('default.jpg')) }}" alt="{{ inf_list[i]['annotated_image_name'] }}" width="300" height="300"></a>
+        </td> 
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for i in range(inf_count) %}
+        {% if inf_list[i]['object_detected'] > 0 %}
+        <td style="background-color:#af0202" halign="center"><h3>Object Detected</h3></td>
+        {% else %}
+        <td style="background-color:#03690c" halign="center"><h3>Passed</h3></td>
+        {% endif %}
+        {% endfor %}
+    </tr>
+    <tr>
+        {% for i in range(inf_count) %}
+        <td valign="top">
+            <p>Camera:<b> {{ inf_list[i]['camera_id'] }} </b></p>
+
+            <p>Inference Time: {{ inf_list[i]['inferencing_time'] }}</p>
+                {% for j in range(det_count) %}
+                    {% if inf_list[i]['unique_id'] == det_list[j]['unique_id'] %}
+                        <p>Detection Name: {{ det_list[j]['tag_name'] }}</p>
+                        <p>Confidence: <b>{{ det_list[j]['probability'] }}</b></p>
+
+                    {% endif %}
+                {% endfor %}
+            <p>{{ inf_list[i]['created'] }}</p>
+        </td>
+        {% endfor %}   
+    </tr>
+</table>
+{% endblock %}

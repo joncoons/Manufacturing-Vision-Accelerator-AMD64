@@ -1,0 +1,134 @@
+body         
+	{ 
+	/* background-image:url('images/bg_blue2.png'); */
+	background: #000000;
+ 	font-family: Arial; 
+	font-size: 9pt; 
+	color: #f1f1f1; 
+	align:left 
+	}
+
+a:active     
+	{ 
+	font-family: Arial; 
+	font-size: 12pt; 
+	color: #000000 
+	}
+	
+a:hover      
+	{ 
+	font-family: Arial; 
+	font-size: 12pt; 
+	color: #e8fdad 
+	}
+	
+a:link       
+	{ 
+	font-family: Arial; 
+	font-size: 12pt; 
+	color: #19f006; 
+	font-weight: bold 
+	}
+	
+a:visited    
+	{ 
+	font-family: arial; 
+	font-size: 12pt; 
+	color: #cccccc; 
+	font-weight: bold 
+	}
+	
+p            
+	{ 
+	padding: 0px 0px 0px 0px;
+	font-family: Arial; 
+	font-size: 10pt; 
+	color: #f1f1f1; 
+	text-align: left;
+	text-indent: 11px; 
+	word-spacing: 0; 
+	line-height: 100%; 
+   	}
+   		
+table        
+	{ 
+	font-family: arial; 
+	font-size: 14pt; 
+	text-align: left; 
+	text-indent: 4; 
+	word-spacing: 0; 
+	color: #FFFFFF; 
+	padding: 0px; 
+	background-color: #20201e 
+	}
+               
+td           
+	{ 
+	height:3px;
+	padding:0px;
+ 	font-family: Arial; 
+	font-size: 11pt; 
+	color: #000000; 
+	}
+	
+tr           
+	{ 
+	height:3px;
+	padding:0px;
+	font-family: Arial; 
+	font-size: 11pt; 
+	color: #000000 
+	}
+	
+h1           
+	{ 
+	padding: 0px 0px 0px 0px;
+	color: #ffffff; 
+	font-family: Arial; 
+	font-size: 24pt; 
+	font-weight: bold 
+	}
+
+h2           
+	{ 
+	padding: 0px 0px 0px 0px;
+	font-size: 18pt; 
+	color: #ffffff; 
+	font-family: arial; 
+	font-weight: bold 
+	}
+	
+h3           
+	{ 
+	padding: 1px 0px 0px 0px;
+	font-family: Arial; 
+	font-size: 14pt; 
+	color: #ffffff; 
+	font-weight: bold 
+	}
+
+h4           
+	{ 
+	padding: 0px 0px 0px 0px;
+	color: #f1f1f1; 
+	font-family: arial; 
+	font-size: 12pt; 
+	font-weight: bold 
+	}
+
+h5           
+	{ 
+	padding: 0px 0px 0px 0px;
+	font-family: Arial; 
+	font-size: 10pt; 
+	color: #f1f1f1; 
+	font-weight: bold 
+	}
+
+h6           
+	{ 
+	font-size: 8pt; 
+	font-family: Arial; 
+	color: #f1f1f1; 
+	font-weight: bold 
+	}

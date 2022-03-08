@@ -1,0 +1,14 @@
+FROM amd64/python:3.7-slim-buster
+
+RUN mkdir /frame_volume && chmod -R 777 /frame_volume
+RUN mkdir /annotated_frame_volume && chmod -R 777 /annotated_frame_volume
+RUN mkdir /retrain_frame_volume && chmod -R 777 /retrain_frame_volume
+
+WORKDIR /app
+
+COPY requirements.txt ./
+RUN pip install -r requirements.txt
+
+COPY . .
+
+CMD [ "python3", "-u", "./main.py" ]

@@ -1,0 +1,88 @@
+# FROM mcr.microsoft.com/azureml/onnxruntime-1.6-ubuntu18.04-py37-cpu-inference:latest
+FROM mcr.microsoft.com/azureml/onnxruntime:v1.5.2-cuda10.2-cudnn8
+
+ARG DEBIAN_FRONTEND=noninteractive
+# Create folder structure for container
+# When combined with deployment manifest, an edge_assets directory will be created on the host device
+RUN mkdir /model_volume && chmod -R 777 /model_volume
+RUN mkdir /images_volume && chmod -R 777 /images_volume
+RUN mkdir /image_sink_volume && chmod -R 777 /image_sink_volume
+RUN mkdir /config && chmod -R 777 /config
+
+WORKDIR /app
+
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
+    mlocate \
+    python3-pip \
+    python3-dev \
+    libcurl4-openssl-dev \
+    libboost-python-dev
+
+# Comment out if not using Allied Vision camera
+COPY VimbaSDK/Vimba_v5.1_Linux64.tgz /opt
+RUN cd /opt && tar -zxvf Vimba_v5.1_Linux64.tgz && rm -rf *.tgz
+RUN cd /opt/Vimba_5_1/VimbaGigETL && ./Install.sh
+ENV GENICAM_GENTL64_PATH="/opt/Vimba_5_1/VimbaGigETL/CTI/x86_64bit"
+RUN echo "$GENICAM_GENTL64_PATH"
+RUN cd /opt/Vimba_5_1/Tools/Viewer/Bin/x86_64bit && chmod +x libVimbaC.so && chown root:root libVimbaC.so 
+RUN cp /opt/Vimba_5_1/Tools/Viewer/Bin/x86_64bit/libVimbaC.so /usr/lib/amd64-linux-gnu
+# //////////////////////////////////////////////////////////
+
+# Install MS SQL pre-requisites and drivers
+RUN apt-get install -y --no-install-recommends \
+    gcc \
+    build-essential \
+    pkg-config \
+    gnupg
+
+RUN apt update \
+    && apt install -y curl apt-transport-https \
+    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt update \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
+
+# ONNX & ONNX runtime, OpenCV foundational packages
+RUN python3 -m pip install --upgrade pip wheel setuptools
+RUN python3 -m pip install cython numpy>=1.19.0 pillow
+RUN python3 -m pip install opencv-contrib-python-headless pyodbc
+RUN python3 -m pip install azure-iot-device~=2.7.0
+
+
+# Comment out if not using ACV->ONNX
+RUN apt-get install -y --no-install-recommends \
+    cmake
+RUN python3 -m pip install onnx==1.8.0 
+
+# Comment out if not using YOLOv5->ONNX
+RUN python3 -m pip install torch torchvision
+RUN python3 -m pip install pandas tqdm PyYAML
+RUN python3 -m pip install scipy seaborn requests
+RUN python3 -m pip install pybind11 pytest protobuf
+RUN python3 -m pip install objdict
+
+# Comment out if not using Basler
+RUN python3 -m pip install pypylon
+
+# Cleanup
+RUN rm -rf /var/lib/apt/lists/* \
+    && apt-get -y autoremove
+
+# Vimba continued ///////////////////////////
+#Pulled from https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo
+RUN apt-get clean
+RUN apt-get update
+RUN apt-get install ffmpeg libsm6 libxext6  -y
+# /////////////////////////////////////////
+
+COPY /app/ .
+
+# file indexer for mlocate - used with docker exec during debug
+RUN updatedb
+
+ENV LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH
+ENV PATH=/usr/local/cuda-10.2/bin:$PATH
+RUN ldconfig
+
+CMD [ "python3", "-u", "./main.py" ]

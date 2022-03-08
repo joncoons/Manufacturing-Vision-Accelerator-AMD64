@@ -1,0 +1,37 @@
+# Written by Jon Coons, Azure AI GBB at Microsoft.
+
+FROM amd64/python:3.7-slim-buster
+
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install -y --no-install-recommends \
+    mlocate \
+    python3-pip \
+    python3-dev 
+
+# Install MS SQL pre-requisites and drivers for pyodbc
+RUN apt-get install -y --no-install-recommends \
+    gcc \
+    build-essential \
+    pkg-config \
+    gnupg
+
+RUN apt-get update \
+    && apt-get install -y curl apt-transport-https \
+    && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
+    && curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt-get update \
+    && ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
+
+RUN python3 -m pip install --upgrade pip setuptools wheel
+RUN python3 -m pip install --upgrade flask cachetools
+RUN python3 -m pip install --pre azure-cosmos azure-iot-hub
+RUN python3 -m pip install pyodbc 
+
+EXPOSE 23000
+
+WORKDIR /app
+
+COPY /app/ .
+
+CMD [ "python3", "-u", "./edge_dashboard_sql.py" ]

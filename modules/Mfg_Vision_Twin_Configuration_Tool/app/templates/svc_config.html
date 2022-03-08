@@ -1,0 +1,32 @@
+{% extends 'bootstrap/base.html' %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/norm.css') }}">
+{% endblock %}
+{% block title %}
+IoT Edge Configuration Tool
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-10 col-lg-8 mx-lg-auto mx-md-auto">
+
+      <h1 class="pt-5 pb-2">IoT Edge Configuration Tool</h1>
+
+      <p class="lead">This form is for service configuration</p>
+
+      {{ wtf.quick_form(form) }}
+      <p></p>
+      <p class="pt-5"><strong>{{ message }}</strong></p>
+      <p></p>
+      <a href="{{ url_for('index', ) }}"><h5>Home</h5></a>
+      <p></p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
