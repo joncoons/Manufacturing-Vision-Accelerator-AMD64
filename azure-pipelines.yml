@@ -1,0 +1,81 @@
+trigger:
+  batch: true
+  branches:
+    include: 
+      - main
+
+pool:
+  name: Default
+  demands:
+   - agent.name -equals ubuntu-18-04
+   
+pr:
+  autoCancel: true
+  
+variables:
+  - group: "Eaton_Var_Group"
+ 
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        steps:                            
+
+          - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
+            displayName: 'Set GitVersion assembly'
+            inputs:
+              versionSpec: '5.x.x'
+              updateAssemblyInfo: true
+
+          - task: gittools.gittools.execute-gitversion-task.gitversion/execute@0
+            displayName: 'Calculate version number'  
+            inputs:
+              targetPath: '$(System.DefaultWorkingDirectory)'
+          
+          - bash: docker login $(ACR_ADDR) -u $(ACR_UNAME) -p $(ACR_PWD)
+            displayName: 'Log into ACR' 
+
+          - task: AzureIoTEdge@2
+            inputs:
+              action: 'Build module images'
+              templateFilePath: "deployment.amd64_cpu.template.json"
+              defaultPlatform: $(BUILD_PLATFORM)
+            displayName: Build Edge modules
+          - task: AzureIoTEdge@2
+            inputs:
+              action: 'Push module images'
+              containerregistrytype: 'Azure Container Registry'
+              azureSubscriptionEndpoint: $(AZURE_SERVICE_CONNECTION)
+              azureContainerRegistry: '{"loginServer":"$(ACR_ADDR)", "id" : "/subscriptions/$(AZURE_SUBSCRIPTION_ID)/resourceGroups/$(RESOURCE_GROUP)/providers/Microsoft.ContainerRegistry/registries/$(ACR_UNAME)"}'
+              templateFilePath: 'deployment.amd64_cpu.template.json'
+              defaultPlatform: $(BUILD_PLATFORM)
+              fillRegistryCredential: true
+            displayName: Push Edge modules to ACR
+        
+          - script: |
+              cp config/deployment.amd64_cpu.amd64.json $(Build.ArtifactStagingDirectory)
+            displayName: Copy manifest to artifact directory
+            
+          - publish: $(Build.ArtifactStagingDirectory)
+            artifact: config
+
+  - stage: Release
+    jobs:
+    - job: Release
+      steps:
+      # Download deployment manifest from build stage
+      - download: current
+        artifact: config
+
+      # Deploy to all edge devices
+      - task: AzureIoTEdge@2
+        displayName: Create Deployment
+        inputs:
+          action: Deploy to IoT Edge devices
+          deploymentFilePath: $(Pipeline.Workspace)/config/deployment.amd64_cpu.amd64.json
+          azureSubscription: $(AZURE_SERVICE_CONNECTION)
+          iothubname: $(IOT_HUB)
+          # deploymentid: EDGE_OF_AI
+          # priority: '10'
+          deviceOption: 'Single Device'
+          deviceId: 'eaton_edge_of_ai_vision_demo'
