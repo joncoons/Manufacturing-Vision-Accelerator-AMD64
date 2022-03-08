@@ -1,3 +1,0 @@
-cap_white
-cap_yellow
-no_cap
