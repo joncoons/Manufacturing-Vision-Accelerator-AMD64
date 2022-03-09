@@ -41,7 +41,7 @@ class RTSP_Camera():
         self.send_to_upload = send_to_upload
         self.send_to_upstream = send_to_upstream
 
-        self.model_name = os.path.basename(modelFile)
+        self.model_name = modelFile
         self.retry_delay = 2
         self.retry_max = 20
         self.frameCount = 0

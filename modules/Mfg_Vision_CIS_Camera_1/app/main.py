@@ -26,10 +26,12 @@ def send_to_upstream(msg_str: str) -> None:
 class CaptureInferenceStore():
 
     def __init__(self, camGvspAllied, camGvspBasler, camRTSP, camFile, camID, camTrigger, camURI, camLocation, camPosition, camFPS, inferenceFPS, modelACV,
-                modelFile, labelFile, targetDim, probThres, iouThres, retrainInterval, storeRawFrames, storeAllInferences, SqlDb, SqlPwd):
+                modelYOLOv5, modelName, modelVersion, targetDim, probThres, iouThres, retrainInterval, storeRawFrames, storeAllInferences, SqlDb, SqlPwd):
 
-        modelPath = os.path.join('/model_volume/',modelFile)
-        labelPath = os.path.join('/model_volume/',labelFile)
+        modelPath = f'/model_volume/{modelName}/{modelVersion}/model.onnx'
+        labelPath = f'/model_volume/{modelName}/{modelVersion}/labels.txt'
+        modelFile = f'{modelName}-v.{modelVersion}'
+        labelFile = 'labels.txt'
         sleep(5)
         if modelACV:
             from inference.onnxruntime_predict import initialize_acv
@@ -98,9 +100,10 @@ def run_CIS():
         camPosition = variables["CAMERA_POSITION"], 
         camFPS = float(variables["CAMERA_FPS"]), 
         inferenceFPS = float(variables["INFERENCE_FPS"]), 
-        modelACV = (variables["MODEL_ACV"]),
-        modelFile = variables["MODEL_FILE"], 
-        labelFile = variables["LABEL_FILE"], 
+        modelACV = variables["MODEL_ACV"],
+        modelYOLOv5 = variables["MODEL_YOLOV5"],
+        modelName = variables["MODEL_NAME"], 
+        modelVersion = variables["MODEL_VERSION"], 
         targetDim = int(variables["TARGET_DIM"]), 
         probThres = float(variables["PROB_THRES"]), 
         iouThres = float(variables["IOU_THRES"]), 
@@ -110,31 +113,6 @@ def run_CIS():
         SqlDb = variables["MSSQL_DB"], 
         SqlPwd = variables["MSSQL_PWD"],
         )
-    # CaptureInferenceStore(
-    #     camGvspAllied = __convertStringToBool(os.environ["CAMERA_GVSP_ALLIED"]), 
-    #     camGvspBasler = __convertStringToBool(os.environ["CAMERA_GVSP_BASLER"]),
-    #     camRTSP = __convertStringToBool(os.environ["CAMERA_RTSP"]), 
-    #     camFile = __convertStringToBool(os.environ["CAMERA_FILE"]), 
-    #     camID = os.environ["CAMERA_ID"],
-    #     camTrigger = __convertStringToBool(os.environ["CAMERA_TRIGGER"]), 
-    #     camURI = os.environ["CAMERA_URI"], 
-    #     camLocation = os.environ["CAMERA_LOCATION"], 
-    #     camPosition = os.environ["CAMERA_POSITION"], 
-    #     camFPS = float(os.environ["CAMERA_FPS"]), 
-    #     inferenceFPS = float(os.environ["INFERENCE_FPS"]), 
-    #     modelACV = __convertStringToBool(os.environ["MODEL_ACV"]),
-    #     modelFile = os.environ["MODEL_FILE"], 
-    #     labelFile = os.environ["LABEL_FILE"], 
-    #     targetDim = int(os.environ["TARGET_DIM"]), 
-    #     probThres = float(os.environ["PROB_THRES"]), 
-    #     iouThres = float(os.environ["IOU_THRES"]), 
-    #     retrainInterval = int(os.environ["RETRAIN_INTERVAL"]), 
-    #     storeRawFrames = __convertStringToBool(os.environ["STORE_RAW_FRAMES"]), 
-    #     storeAllInferences = __convertStringToBool(os.environ["STORE_ALL_INFERENCES"]), 
-    #     SqlDb = os.environ["MSSQL_DB"], 
-    #     SqlPwd = os.environ["MSSQL_PWD"],
-    #     )
-
 def twin_update():
     TwinUpdater()
 

@@ -39,7 +39,7 @@ class Cam_File_Sink():
         self.send_to_upload = send_to_upload
         self.send_to_upstream = send_to_upstream
 
-        self.model_name = os.path.basename(modelFile)
+        self.model_name = modelFile
         self.frameCount = 0
 
         self.cycle_begin = 0
