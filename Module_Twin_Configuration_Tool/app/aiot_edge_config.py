@@ -2,11 +2,7 @@ import os
 import sys
 import pickle
 import json
-from markupsafe import escape
 from time import sleep
-from azure.cosmos import exceptions, CosmosClient, PartitionKey
-from azure.iot.hub import IoTHubRegistryManager
-from azure.iot.hub.models import Twin, TwinProperties, QuerySpecification, QueryResult
 from flask import Flask, request, render_template, redirect, url_for
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
@@ -24,7 +20,7 @@ from wtforms.validators import DataRequired, Length, URL
 from aiot_device import get_edge_devices, get_edge_modules, get_module_twins, patch_module_twins, restart_module
 from aiot_cosmos import cosmos_create_items, cosmos_query_dm, cosmos_query_mt
 
-pkl_path = "config/"
+pkl_path = "/config/"
 col_hub_updates = "edgemoduletwins"
 col_twin_updates = "edgetwinupdates"
 app = Flask(__name__)
@@ -50,8 +46,8 @@ class TwinConfig(FlaskForm):
     camera_position = StringField('Camera Position*', validators=[DataRequired()])
     camera_fps = StringField('Camera FPS (if no trigger)')
     inference_fps = StringField('Inference FPS (if no trigger)')
-    model_file = StringField('Model File Name*', validators=[DataRequired()])
-    label_file = StringField('Label File Name*', validators=[DataRequired()])
+    model_name = StringField('Model Name*', validators=[DataRequired()])
+    model_version = StringField('Model Version*', validators=[DataRequired()])
     target_dim = StringField('Model Input Dimension* (i.e. 640)*', validators=[DataRequired()])
     prob_thres = StringField('Probability Threshold* (i.e. .65)*', validators=[DataRequired()])
     iou_thres = StringField('IOU Threshold* (i.e. .45)*', validators=[DataRequired()])
@@ -213,8 +209,8 @@ def twin_config():
             inference_fps = mt_data[0]['INFERENCE_FPS'],
             model_acv = mt_data[0]['MODEL_ACV'],
             model_yolov5 = mt_data[0]['MODEL_YOLOV5'],
-            model_file = mt_data[0]['MODEL_FILE'],
-            label_file = mt_data[0]['LABEL_FILE'],
+            model_name = mt_data[0]['MODEL_NAME'],
+            model_version = mt_data[0]['MODEL_VERSION'],
             target_dim = mt_data[0]['TARGET_DIM'],
             prob_thres = mt_data[0]['PROB_THRES'],
             iou_thres = mt_data[0]['IOU_THRES'],
@@ -249,8 +245,8 @@ def twin_config():
         inference_fps = form.inference_fps.data
         model_acv = form.model_acv.data
         model_yolov5 = form.model_yolov5.data
-        model_file = form.model_file.data
-        label_file = form.label_file.data
+        model_name = form.model_name.data
+        model_version = form.model_version.data
         target_dim = form.target_dim.data
         prob_thres = form.prob_thres.data
         iou_thres = form.iou_thres.data
@@ -277,8 +273,8 @@ def twin_config():
             "INFERENCE_FPS": inference_fps,
             "MODEL_ACV": model_acv,
             "MODEL_YOLOV5": model_yolov5,
-            "MODEL_FILE": model_file,
-            "LABEL_FILE": label_file,
+            "MODEL_NAME": model_name,
+            "MODEL_VERSION": model_version,
             "TARGET_DIM": target_dim,
             "PROB_THRES": prob_thres,
             "IOU_THRES": iou_thres,
@@ -302,8 +298,8 @@ def twin_config():
             "INFERENCE_FPS": inference_fps,
             "MODEL_ACV": model_acv,
             "MODEL_YOLOV5": model_yolov5,
-            "MODEL_FILE": model_file,
-            "LABEL_FILE": label_file,
+            "MODEL_NAME": model_name,
+            "MODEL_VERSION": model_version,
             "TARGET_DIM": target_dim,
             "PROB_THRES": prob_thres,
             "IOU_THRES": iou_thres,
