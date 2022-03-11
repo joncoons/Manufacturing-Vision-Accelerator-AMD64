@@ -17,7 +17,7 @@ app = Flask(__name__)
 
 
 def sql_connect():
-    with pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};PORT=1433;SERVER=192.168.0.176;UID=SA;PWD=Sm&8jZX*WSkJL2j%27XT;DATABASE=DefectDB') as sql_conn:
+    with pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};PORT=1433;SERVER=localhost;UID=SA;PWD=<your password>;DATABASE=DefectDB') as sql_conn:
         sql_conn.autocommit = True
         print("SQL connected")
         cursor = sql_conn.cursor()
