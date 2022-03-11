@@ -5,22 +5,28 @@ trigger:
       - main
 
 pool:
-  name: Default
-  demands:
-   - agent.name -equals ubuntu-18-04
+  vmImage: ubuntu-latest
+
+# self-hosted agent, if exists
+# pool:
+#   name: Default
+#   demands:
+#    - agent.name -equals AIoT-T4-GPU-Edge
    
 pr:
   autoCancel: true
   
 variables:
-  - group: "Eaton_Var_Group"
+  - group: "<your variable group name>"
  
 stages:
   - stage: Build
     jobs:
       - job: Build
-        steps:                            
-
+        steps: 
+          - bash: pip install -U iotedgedev
+            displayName: 'Install iotedgedev into environment'
+            
           - task: gittools.gittools.setup-gitversion-task.gitversion/setup@0
             displayName: 'Set GitVersion assembly'
             inputs:
@@ -32,13 +38,13 @@ stages:
             inputs:
               targetPath: '$(System.DefaultWorkingDirectory)'
           
-          - bash: docker login $(ACR_ADDR) -u $(ACR_UNAME) -p $(ACR_PWD)
+          - bash: sudo docker login $(ACR_ADDR) -u $(ACR_UNAME) -p $(ACR_PWD)
             displayName: 'Log into ACR' 
 
           - task: AzureIoTEdge@2
             inputs:
               action: 'Build module images'
-              templateFilePath: "deployment.amd64_cpu.template.json"
+              templateFilePath: "deployment.amd64_gpu.template.json"
               defaultPlatform: $(BUILD_PLATFORM)
             displayName: Build Edge modules
           - task: AzureIoTEdge@2
@@ -47,13 +53,13 @@ stages:
               containerregistrytype: 'Azure Container Registry'
               azureSubscriptionEndpoint: $(AZURE_SERVICE_CONNECTION)
               azureContainerRegistry: '{"loginServer":"$(ACR_ADDR)", "id" : "/subscriptions/$(AZURE_SUBSCRIPTION_ID)/resourceGroups/$(RESOURCE_GROUP)/providers/Microsoft.ContainerRegistry/registries/$(ACR_UNAME)"}'
-              templateFilePath: 'deployment.amd64_cpu.template.json'
+              templateFilePath: 'deployment.amd64_gpu.template.json'
               defaultPlatform: $(BUILD_PLATFORM)
               fillRegistryCredential: true
             displayName: Push Edge modules to ACR
         
           - script: |
-              cp config/deployment.amd64_cpu.amd64.json $(Build.ArtifactStagingDirectory)
+              cp config/deployment.amd64_gpu.amd64.json $(Build.ArtifactStagingDirectory)
             displayName: Copy manifest to artifact directory
             
           - publish: $(Build.ArtifactStagingDirectory)
@@ -72,10 +78,11 @@ stages:
         displayName: Create Deployment
         inputs:
           action: Deploy to IoT Edge devices
-          deploymentFilePath: $(Pipeline.Workspace)/config/deployment.amd64_cpu.amd64.json
+          deploymentFilePath: $(Pipeline.Workspace)/config/deployment.amd64_gpu.amd64.json
           azureSubscription: $(AZURE_SERVICE_CONNECTION)
           iothubname: $(IOT_HUB)
+          # Your automatic configuration name, if used in IoT Hub
           # deploymentid: EDGE_OF_AI
           # priority: '10'
           deviceOption: 'Single Device'
-          deviceId: 'eaton_edge_of_ai_vision_demo'
+          deviceId: '<your_edge_device_name>'
