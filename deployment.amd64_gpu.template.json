@@ -160,7 +160,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.Eaton_Model_Repo}",
+              "image": "${MODULES.Mfg_Vision_Model_Repo}",
               "createOptions": {
                 "HostConfig": {
                   "Binds": [
@@ -220,7 +220,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "visionaccelerator.azurecr.io/edgevision_file_cleanup:0.1.1.0-amd64",
+              "image": "Mfg_Vision_File_Cleanup",
               "createOptions": {
                 "NetworkingConfig": {
                   "EndpointsConfig": {
@@ -312,7 +312,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.Eaton_Dashboard}",
+              "image": "${MODULES.Mfg_Vision_Dashboard_Grafana}",
               "createOptions": {
                 "Env": [
                   "GF_SECURITY_ADMIN_PASSWORD=Pa$$word321"
@@ -365,7 +365,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "${MODULES.Simple_Dashboard}",
+              "image": "${MODULES.Mfg_Vision_Dashboard_Custom}",
               "createOptions": {
                 "NetworkingConfig": {
                   "EndpointsConfig": {
