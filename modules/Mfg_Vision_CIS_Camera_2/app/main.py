@@ -84,6 +84,16 @@ def run_CIS():
     variables = pickle.load(config_read)
     print(f"Variables: \n{variables}")
 
+    if variables["CAMERA_FPS"]:
+        CAMERA_FPS = float(variables["CAMERA_FPS"])
+    else: 
+        CAMERA_FPS = float(1)
+
+    if variables["INFERENCE_FPS"]:
+        INFERENCE_FPS = float(variables["INFERENCE_FPS"])
+    else: 
+        INFERENCE_FPS = float(1)
+
     os.environ["IOU_THRES"] = variables["IOU_THRES"]
     os.environ['TARGET_DIM'] = variables["TARGET_DIM"]
     os.environ["PROB_THRES"] = variables["PROB_THRES"]
@@ -98,8 +108,8 @@ def run_CIS():
         camURI = variables["CAMERA_URI"], 
         camLocation = variables["CAMERA_LOCATION"], 
         camPosition = variables["CAMERA_POSITION"], 
-        camFPS = float(variables["CAMERA_FPS"]), 
-        inferenceFPS = float(variables["INFERENCE_FPS"]), 
+        camFPS = CAMERA_FPS, 
+        inferenceFPS = INFERENCE_FPS, 
         modelACV = variables["MODEL_ACV"],
         modelYOLOv5 = variables["MODEL_YOLOV5"],
         modelName = variables["MODEL_NAME"], 
@@ -113,6 +123,7 @@ def run_CIS():
         SqlDb = variables["MSSQL_DB"], 
         SqlPwd = variables["MSSQL_PWD"],
         )
+        
 def twin_update():
     TwinUpdater()
 
@@ -124,5 +135,3 @@ if __name__ == "__main__":
     thread1.join()
     # sleep(5)
     thread2.start()
-
-    

@@ -24,6 +24,7 @@ def sql_connect():
         return cursor
         
 def q_camera():
+    # Error with single camera
     q_0 = _sql.execute('WITH CTE AS (SELECT DISTINCT camera_id FROM InferenceData) SELECT TOP (4) camera_id FROM CTE ORDER BY camera_id ASC')
     q_0_results = q_0.fetchall()
     return q_0_results
