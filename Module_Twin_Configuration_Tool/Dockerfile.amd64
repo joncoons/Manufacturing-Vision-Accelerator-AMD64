@@ -2,7 +2,7 @@
 # To build the container, run the following line in a WSL2 terminal, or drop the sudo and run in PowerShell
 # sudo docker build -f Dockerfile.amd64 -t <your acr name>.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64 . && sudo docker push <your acr name>.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64
 # You can skip the docker push if you only need a local copy.
-# To run, simply execute 'sudo docker run -d -p 22000:22000 --rm -it visionaccelerator.azurecr.io.azurecr.io/iot_edge_configuration_tool_local:0.0.1-amd64'.  The container will open up ephemeral port 22394, so use a browser to navigate to http://localhost:22000 if running locally.
+# To run, simply execute 'sudo docker run -d -p 22000:22000 --rm -it <your acr name>.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64'.  The container will open up ephemeral port 22000, so use a browser to navigate to http://localhost:22000 if running locally.
 # 
 #  You can also run this locally by executing 'python3 aiot_edge_config.py' from the /app folder
 
