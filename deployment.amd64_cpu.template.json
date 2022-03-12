@@ -392,6 +392,11 @@
                   ]
                 }
               }
+            },
+            "env": {
+              "CAMS_TO_DISPLAY": {
+                "value": "2"
+              }
             }
           },
           "Mfg_Vision_Twin_Configuration_Tool": {

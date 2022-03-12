@@ -24,8 +24,7 @@ def sql_connect():
         return cursor
         
 def q_camera():
-    # Error with single camera
-    q_0 = _sql.execute('WITH CTE AS (SELECT DISTINCT camera_id FROM InferenceData) SELECT TOP (4) camera_id FROM CTE ORDER BY camera_id ASC')
+    q_0 = _sql.execute(f'WITH CTE AS (SELECT DISTINCT camera_id FROM InferenceData) SELECT TOP ({CAMS_TO_DISPLAY}) camera_id FROM CTE ORDER BY camera_id ASC')
     q_0_results = q_0.fetchall()
     return q_0_results
 
@@ -92,6 +91,12 @@ def index():
     return render_template('index.html', inf_count=inf_count, det_count = det_count, inf_list = inf_list, det_list=det_list, p=p, f=f)
 
 if __name__ == '__main__':
+
+    try:
+        CAMS_TO_DISPLAY = int(os.environ["CAMS_TO_DISPLAY"])
+    except ValueError as error:
+        print(error)
+        sys.exit(1)
 
     app.run(host='0.0.0.0', port=23000)
 

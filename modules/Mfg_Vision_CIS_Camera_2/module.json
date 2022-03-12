@@ -4,7 +4,7 @@
   "image": {
     "repository": "${ACR_ADDR}/mfg_vision_cis_camera_2",
     "tag": {
-      "version": "0.0.1",
+      "version": "${CONTAINER_VERSION_TAG}",
       "platforms": {
         "amd64": "./Dockerfile.amd64_cpu"
       }
