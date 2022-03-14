@@ -339,5 +339,5 @@ if __name__ == '__main__':
     # app.run(debug=True)
 
     # run in container
-    app.run(host='0.0.0.0', port=22001)
+    app.run(host='0.0.0.0', port=22000)
     
