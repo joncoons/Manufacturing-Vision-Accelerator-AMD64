@@ -208,7 +208,7 @@
                 "value": "false"
               },
               "STORE_CONN_STR": {
-                "value": "${BLOB_CONN_STR}"
+                "value": "${STORAGE_CONN_STR}"
               }
             }
           },
@@ -245,6 +245,59 @@
                 "value": "7200"
               }
             }
+          },
+          "Mfg_Vision_File_Download_Utility": {
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_File_Download_Utility}",
+              "createOptions": {
+                "HostConfig":{
+                  "Binds": [
+                    "/home/edge_assets/file_download:/files"
+                    ]
+                }
+              }
+            },
+            "type": "docker",
+            "version": "1.0",
+            "env": {
+              "LOCAL_FILE_PATH": {
+                "value": "/files/"
+              },
+              "BLOB_CLOUD_CONNSTR": {
+                "value": "$S"
+              },
+              "BLOB_AZURE_FILE_DOWNLOAD_CONTAINER": {
+                "value": "files-to-edge"
+              }
+            },
+            "status": "running",
+            "restartPolicy": "always"
+          },
+          "Mfg_Vision_File_Upload_Utility": {
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_File_Upload_Utility}",
+              "createOptions": {
+                "HostConfig":{
+                  "Binds": [
+                    "/home/edge_assets/file_upload:/files"]
+                }
+              }
+            },
+            "type": "docker",
+            "version": "1.0",
+            "env": {
+              "LOCAL_FILE_PATH": {
+                "value": "/files/"
+              },
+              "BLOB_LOCAL_CONNSTR": {
+                "value": "${STORAGE_CONN_STR}"
+              },
+              "BLOB_LOCAL_AZURE_FILE_CONTAINER": {
+                "value": "files-to-azure"
+              }
+            },
+            "status": "running",
+            "restartPolicy": "always"
           },
           "SQL_on_Edge": {
             "version": "1.0",

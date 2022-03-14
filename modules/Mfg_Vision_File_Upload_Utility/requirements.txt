@@ -1,0 +1,4 @@
+azure-iot-device~=2.0.0
+azure-core==1.7.0
+azure-storage-blob==12.3.2
+requests==2.20.1

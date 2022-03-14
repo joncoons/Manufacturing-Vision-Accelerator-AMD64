@@ -1,0 +1,3 @@
+azure-core==1.10.0
+azure-storage-blob==12.8.0
+requests==2.20.1

@@ -25,6 +25,6 @@ WORKDIR /app
 
 COPY /app/ .
 
-EXPOSE 22000
+EXPOSE 22001
 
 CMD [ "python3", "-u", "./aiot_edge_config.py" ]

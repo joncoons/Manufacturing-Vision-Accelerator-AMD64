@@ -1,0 +1,16 @@
+{
+  "$schema-version": "0.0.1",
+  "description": "",
+  "image": {
+    "repository": "${ACR_ADDR}/core_file_uploader",
+    "tag": {
+      "version": "${CONTAINER_VERSION_TAG}",
+      "platforms": {
+        "amd64": "./Dockerfile.amd64"
+      }
+    },
+    "buildOptions": [],
+    "contextPath": "./"
+  },
+  "language": "python"
+}

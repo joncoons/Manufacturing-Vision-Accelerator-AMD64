@@ -20,7 +20,7 @@ from wtforms.validators import DataRequired, Length, URL
 from aiot_device import get_edge_devices, get_edge_modules, get_module_twins, patch_module_twins, restart_module
 from aiot_cosmos import cosmos_create_items, cosmos_query_dm, cosmos_query_mt
 
-pkl_path = "config/"
+pkl_path = "/config/"
 col_hub_updates = "edgemoduletwins"
 col_twin_updates = "edgetwinupdates"
 app = Flask(__name__)
@@ -339,5 +339,5 @@ if __name__ == '__main__':
     # app.run(debug=True)
 
     # run in container
-    app.run(host='0.0.0.0', port=22000)
+    app.run(host='0.0.0.0', port=22001)
     
