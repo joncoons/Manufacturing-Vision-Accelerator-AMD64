@@ -59,7 +59,7 @@ class Basler_GVSP_Camera:
             cam_info = pylon.DeviceInfo()
             cam_info.SetSerialNumber(self.camURI)
             camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateFirstDevice(cam_info))
-            camera.open()
+            # camera.open()
 
             # Grabing Continusely (video) with minimal delay
             camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly) 
@@ -97,7 +97,7 @@ class Basler_GVSP_Camera:
                     else:
                         from inference.onnxruntime_yolov5 import predict_yolo
                         result = predict_yolo(frame_optimized)
-                    print(json.dumps(result))
+                    # print(json.dumps(result))
 
                     now = datetime.now()
                     created = now.isoformat()

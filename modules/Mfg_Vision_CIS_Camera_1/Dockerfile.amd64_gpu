@@ -14,6 +14,7 @@ WORKDIR /app
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
     mlocate \
+    python3.7 \
     python3-pip \
     python3-dev \
     libcurl4-openssl-dev \
@@ -44,26 +45,26 @@ RUN apt update \
     && ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
 
 # ONNX & ONNX runtime, OpenCV foundational packages
-RUN python3 -m pip install --upgrade pip wheel setuptools
-RUN python3 -m pip install cython numpy>=1.19.0 pillow
-RUN python3 -m pip install opencv-contrib-python-headless pyodbc
-RUN python3 -m pip install azure-iot-device~=2.7.0
+RUN python3.7 -m pip install --upgrade pip wheel setuptools
+RUN python3.7 -m pip install cython numpy>=1.19.0 pillow
+RUN python3.7 -m pip install opencv-contrib-python-headless pyodbc
+RUN python3.7 -m pip install azure-iot-device~=2.7.0
 
 
 # Comment out if not using ACV->ONNX
 RUN apt-get install -y --no-install-recommends \
     cmake
-RUN python3 -m pip install onnx==1.8.0 
+RUN python3.7 -m pip install onnx==1.8.0 
 
 # Comment out if not using YOLOv5->ONNX
-RUN python3 -m pip install torch torchvision
-RUN python3 -m pip install pandas tqdm PyYAML
-RUN python3 -m pip install scipy seaborn requests
-RUN python3 -m pip install pybind11 pytest protobuf
-RUN python3 -m pip install objdict
+RUN python3.7 -m pip install torch torchvision
+RUN python3.7 -m pip install pandas tqdm PyYAML
+RUN python3.7 -m pip install scipy seaborn requests
+RUN python3.7 -m pip install pybind11 pytest protobuf
+RUN python3.7 -m pip install objdict
 
 # Comment out if not using Basler
-RUN python3 -m pip install pypylon
+RUN python3.7 -m pip install pypylon
 
 # Cleanup
 RUN rm -rf /var/lib/apt/lists/* \
@@ -85,4 +86,4 @@ ENV LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH
 ENV PATH=/usr/local/cuda-10.2/bin:$PATH
 RUN ldconfig
 
-CMD [ "python3", "-u", "./main.py" ]
+CMD [ "python3.7", "-u", "./main.py" ]

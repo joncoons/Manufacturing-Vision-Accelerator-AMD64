@@ -12,19 +12,19 @@ img_root = "/images_volume"
 def file_cleanup(seconds):
     # img_root_arr = [frame_root, annotated_root, retrain_root]
     while True:
-        print(f"Searching files to delete older than {seconds} seconds...")
+        # print(f"Searching files to delete older than {seconds} seconds...")
         current_time = time.time()
-        print(time.localtime())
+        # print(time.localtime())
         # for img_root in img_root_arr:
         img_list = os.listdir(img_root)
-        print(f"Image List: {img_list}")
+        # print(f"Image List: {img_list}")
         if not img_list:
             continue
         for filename in img_list:
             img_path = os.path.join(img_root, filename) 
             if (current_time - os.stat(img_path).st_mtime) > seconds:
                 os.remove(img_path)
-                print(f"Deleted image: {filename}")
+                # print(f"Deleted image: {filename}")
         time.sleep(120)
 
 if __name__ == "__main__":

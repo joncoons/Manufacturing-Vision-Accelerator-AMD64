@@ -70,10 +70,6 @@ def initialize_acv(modelPath, labelPath):
 
 def predict_acv(image):
     log_msg('Predicting image')
-    # with open(LABELS_FILENAME, 'r') as f:
-    #     labels = [l.strip() for l in f.readlines()]
-
-    # od_model = ONNXRuntimeObjectDetection(MODEL_FILENAME, labels)
     w, h = image.size
     log_msg("Image size: {}x{}".format(w, h))
     t1 = time.time()
@@ -86,24 +82,5 @@ def predict_acv(image):
                 'inference_time': t_infer,
                 'predictions': predictions
                 }
-
-    # log_msg('Results: ' + json.dumps(response))
     
     return response
-
-# def main(image_filename):
-#     # Load labels
-#     with open(LABELS_FILENAME, 'r') as f:
-#         labels = [l.strip() for l in f.readlines()]
-
-#     od_model = ONNXRuntimeObjectDetection(MODEL_FILENAME, labels)
-
-#     image = Image.open(image_filename)
-#     predictions = od_model.predict_image(image)
-#     print(predictions)
-    
-# if __name__ == '__main__':
-#     if len(sys.argv) <= 1:
-#         print('USAGE: {} image_filename'.format(sys.argv[0]))
-#     else:
-#         main(sys.argv[1])

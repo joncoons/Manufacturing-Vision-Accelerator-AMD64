@@ -68,13 +68,11 @@ def index():
     det_list = []
     now = datetime.now()
     utc_now = datetime.utcnow()
-    print(utc_now)
-    print(now)
     cams = q_camera() 
     for cam in cams:        
         inf_vals = q_inference(cam)
         inf_count = len(inf_vals)
-        print(inf_count)
+        # print(inf_count)
         for inf_val in inf_vals:
             inf_dict = list_to_dict(inf_keys, inf_val)
             inf_list.append(inf_dict)

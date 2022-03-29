@@ -114,44 +114,6 @@
               }
             }
           },
-          "Mfg_Vision_CIS_Camera_2": {
-            "version": "1.0",
-            "type": "docker",
-            "status": "running",
-            "restartPolicy": "always",
-            "settings": {
-              "image": "${MODULES.Mfg_Vision_CIS_Camera_2}",
-              "createOptions": {
-                "NetworkingConfig": {
-                  "EndpointsConfig": {
-                    "host": {}
-                  }
-                },
-                "HostConfig": {
-                  "IpcMode": "host",
-                  "NetworkMode": "host",
-                  "Binds": [
-                    "/home/edge_assets/images_volume:/images_volume",
-                    "/home/edge_assets/model_volume:/model_volume",
-                    "/home/edge_assets/image_sink_volume/Mfg_Vision_CIS_Camera_2:/image_sink_volume",
-                    "/home/edge_assets/CIS_Config/Mfg_Vision_CIS_Camera_2:/config"
-                  ],
-                  "Mounts": [
-                    {
-                      "Type": "volume",
-                      "Source": "images_volume",
-                      "Target": "/var/opt/images_volume"
-                    },
-                    {
-                      "Type": "volume",
-                      "Source": "model_volume",
-                      "Target": "/var/opt/model_volume"
-                    }
-                  ]
-                }
-              }
-            }
-          },
           "Mfg_Vision_Model_Repo": {
             "version": "1.0",
             "type": "docker",
@@ -474,7 +436,10 @@
                     ]
                   },
                   "IpcMode": "host",
-                  "NetworkMode": "host"
+                  "NetworkMode": "host",
+                  "Binds": [
+                    "/home/edge_assets/config_tool:/config"
+                  ]
                 }
               }
             }
@@ -487,9 +452,7 @@
         "schemaVersion": "1.1",
         "routes": {
           "Mfg_Vision_CIS_Camera_1_Inference_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_1/outputs/outputInference INTO $upstream",
-          "Mfg_Vision_CIS_Camera_2_Inference_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_2/outputs/outputInference INTO $upstream",
-          "Mfg_Vision_CIS_Camera_1_Image_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_1/outputs/outputImageSend INTO BrokeredEndpoint(\"/modules/Mfg_Vision_Image_Upload/inputs/inputImageSend\")",
-          "Mfg_Vision_CIS_Camera_2_Image_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_2/outputs/outputImageSend INTO BrokeredEndpoint(\"/modules/Mfg_Vision_Image_Upload/inputs/inputImageSend\")"
+          "Mfg_Vision_CIS_Camera_1_Image_Upload": "FROM /messages/modules/Mfg_Vision_CIS_Camera_1/outputs/outputImageSend INTO BrokeredEndpoint(\"/modules/Mfg_Vision_Image_Upload/inputs/inputImageSend\")"
         },
         "storeAndForwardConfiguration": {
           "timeToLiveSecs": 7200

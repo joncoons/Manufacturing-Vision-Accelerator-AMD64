@@ -20,11 +20,11 @@ def create_client():
         # NOTE: This function only handles messages sent to "input1".
         # Messages sent to other inputs, or to the default, will be discarded
         if message.input_name == "input1":
-            print("the data in the message received on input1 was ")
-            print(message.data)
-            print("custom properties are")
-            print(message.custom_properties)
-            print("forwarding mesage to output1")
+            # print("the data in the message received on input1 was ")
+            # print(message.data)
+            # print("custom properties are")
+            # print(message.custom_properties)
+            # print("forwarding mesage to output1")
             await client.send_message_to_output(message, "output1")
 
     try:
@@ -48,14 +48,14 @@ async def run_sample(client):
 def main():
     if not sys.version >= "3.5.3":
         raise Exception( "The sample requires python 3.5.3+. Current version of Python: %s" % sys.version )
-    print ( "IoT Hub Client for Python" )
+    # print ( "IoT Hub Client for Python" )
 
     # NOTE: Client is implicitly connected due to the handler being set on it
     client = create_client()
 
     # Define a handler to cleanup when module is is terminated by Edge
     def module_termination_handler(signal, frame):
-        print ("IoTHubClient sample stopped by Edge")
+        # print ("IoTHubClient sample stopped by Edge")
         stop_event.set()
 
     # Set the Edge termination handler
@@ -66,10 +66,10 @@ def main():
     try:
         loop.run_until_complete(run_sample(client))
     except Exception as e:
-        print("Unexpected error %s " % e)
+        # print("Unexpected error %s " % e)
         raise
     finally:
-        print("Shutting down IoT Hub Client...")
+        # print("Shutting down IoT Hub Client...")
         loop.run_until_complete(client.shutdown())
         loop.close()
 

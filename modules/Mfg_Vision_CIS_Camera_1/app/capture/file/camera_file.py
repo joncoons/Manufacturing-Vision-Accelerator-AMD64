@@ -69,7 +69,7 @@ class Cam_File_Sink():
                     else:
                         from inference.onnxruntime_yolov5 import predict_yolo
                         result = predict_yolo(frame_optimized)
-                    print(json.dumps(result))
+                    # print(json.dumps(result))
 
                     now = datetime.now()
                     created = now.isoformat()

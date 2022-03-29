@@ -42,11 +42,11 @@ def main():
                 file_data = None
                 with open(local_path, 'rb') as file:
                     blob_client.upload_blob(file, overwrite=True)
-                print(f'Uploaded from local file {local_path} to Azure Blob storage path {azure_path}')
+                # print(f'Uploaded from local file {local_path} to Azure Blob storage path {azure_path}')
                 #     file_data = file.read()
                         
                 # container_client.upload_blob(file, file_data)
-        print('Finished uploading files!\n')
+        # print('Finished uploading files!\n')
         time.sleep(60)
 
 

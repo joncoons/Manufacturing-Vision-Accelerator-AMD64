@@ -87,10 +87,10 @@ class ObjectDetection(object):
         assert len(prediction_output.shape) == 3
         num_anchor = anchors.shape[0]
         height, width, channels = prediction_output.shape
-        print(len(self.labels))
-        print(prediction_output.shape)
-        print(anchors.shape[0])
-        print(anchors.shape)
+        # print(len(self.labels))
+        # print(prediction_output.shape)
+        # print(anchors.shape[0])
+        # print(anchors.shape)
         assert channels % num_anchor == 0
 
         num_class = int(channels / num_anchor) - 5

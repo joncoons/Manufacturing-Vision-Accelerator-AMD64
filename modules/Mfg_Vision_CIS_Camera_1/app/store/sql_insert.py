@@ -79,7 +79,7 @@ class InsertInference():
                                     self.unique_id)
                                 )
             i = int(0)
-            print(type(self.detections))
+            # print(type(self.detections))
             if self.detection_count > 0:
                 for i in range(int(self.detection_count)):
                     self.tag_id = self.detections[i]['labelId']
