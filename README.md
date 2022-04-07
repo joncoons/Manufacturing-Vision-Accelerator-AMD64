@@ -1,9 +1,9 @@
 # Manufacturing Vision Accelerator for AMD64 architectures
-Welcome to the Manufacuring Vision Accelerator repo - we hope what you find here may be helpful to your pursuit of vision analytics on the Edge!  
+Welcome to the Manufacuring Vision Accelerator repo - we hope what you find here may be helpful to your pursuit of vision analytics on the Edge! The main portion of this code and process flow was created by myself and Nick Kwiecien, Ph.D., but there are a great number of tehnical collaborators as well on this AIoT journey, including Rick Durham (Azure AI/ML) and Keith Hill, Azure PM.  
 
 This is a sample repository of working code - nothing more, nothing less.  There are no warranties or guarantees stated, or otherwise implied.
 
-# A bit about the 'vision' 
+# About our 'vision' 
 
 This project was built out of necessity - the need to solve for that 'last mile' connectivity of remote vision workloads, but also solved for the unique challenges of these use cases.  Taking a 'code-first' approach across a number of deep engagements with multiple manufacturing customers, we began to see universal patterns emerge:
 
