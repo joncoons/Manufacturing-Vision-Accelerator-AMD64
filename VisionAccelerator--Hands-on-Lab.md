@@ -8,7 +8,7 @@ Vision Accelerator - Hands-On-Lab
    
    Once you've logged into the Azure Portal, you can click I the upper left corner of the screen to bring up the menu, and then click add resource. From there you can either choose Virtual Machine, or the Ubuntu 18.04 Server VM option. (I’m using a VM with the SKU of Standard B4ms, which is the default for Ubuntu Server 18.04)
    
-   ![](/hol_images/repo_download.JPG)
+   ![](/hol_images/azure_portal.JPG)
    
    
    
