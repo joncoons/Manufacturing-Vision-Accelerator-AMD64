@@ -13,7 +13,7 @@ This project was built out of necessity - the need to provide for that 'last mil
 
 2. Address the 80%:  
 
- Within our vision engagements, we found that 80%+ of the use cases revolved around anomaly detection, so the focus of this repository is on object detection.  This could be detecting the presence of foreign objects in a production line, detection of errors in assembly, safety infractions such as the lack of PPE or a spill/leakage of product.  While image classification and segmentation are also important areas which this repository will expand into eventually, the initial focus is on the majority use case.   We will also, in time, provide patterns for integrating Computer Vision services such as OCR to augement capabilities.
+ Within our vision engagements, we found that 80%+ of the use cases revolved around anomaly detection, so the focus of this repository is on object detection.  This could be detecting the presence of foreign objects in a production line, detection of errors in assembly, safety infractions such as the lack of PPE or a spill/leakage of product.  While image classification and segmentation are also important areas which this repository will expand into eventually, the initial focus is on the majority use case.   We will also, in time, provide patterns for integrating Computer Vision services such as OCR to augment capabilities.
 
 3. Plan for model retraining:
 
