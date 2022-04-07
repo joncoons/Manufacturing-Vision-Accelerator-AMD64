@@ -5,7 +5,7 @@ This is a sample repository of working code - nothing more, nothing less.  There
 
 # About our 'vision' 
 
-This project was built out of necessity - the need to solve for that 'last mile' connectivity of remote vision workloads, but also solved for the unique challenges of these use cases.  Taking a 'code-first' approach across a number of deep engagements with multiple manufacturing customers, we began to see universal patterns emerge:
+This project was built out of necessity - the need to solve for that 'last mile' connectivity of remote vision workloads that also solved for the unique challenges of these use cases.  Taking a 'code-first' approach across a number of deep engagements with multiple manufacturing customers, we began to see universal patterns emerge:
 
 1. Build for flexibility:  
 Taking a 'code-first' approach meant being deliberate about choices in terms of programming language and the packages used.  For this project, we coded everything in Python, and used only open source elements, such as OpenCV for image capture/manipulation and the Open Neural Network Exchange (ONNX) format for vision models. The goal is to provide a usable code base as is, but malleable enough that customers and/or our partners can easily customize it as well.
