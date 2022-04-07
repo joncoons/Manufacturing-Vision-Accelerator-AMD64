@@ -1,6 +1,6 @@
-Vision Accelerator - Hands-On-Lab 
+# Vision Accelerator - Hands-On-Lab 
 
-1) Set up Azure VM instance
+1) Set up your Azure VM instance
    
    For this lab, we're going to create a non-GPU VM in Azure (you can also use a dGpu-based machine if you have want) To create a VM, you'll need an Azure subscription.  
    
@@ -37,7 +37,7 @@ Vision Accelerator - Hands-On-Lab
    
    ![](/hol_images/repo_download.JPG)
    
-   For the HoL, we'll be using VS Code  - if you don't have a this installed on your PC, it's free to download and use for any  OS, and and be found [here]([Download Visual Studio Code - Mac, Linux, Windows](https://code.visualstudio.com/download)).
+   For the lab, we'll be using VS Code  - if you don't have a this installed on your PC, it's free to download and use for any  OS, and and be found [here]([Download Visual Studio Code - Mac, Linux, Windows](https://code.visualstudio.com/download)).
    
    In VS Code, go the File -> Open Folder and choose the MANUFACTURING-VISION-ACCELERATOR-AMD64 folder.   This will open the project in your IDE, and we can now walk through the code to give you better idea of how the solution functions.
 
