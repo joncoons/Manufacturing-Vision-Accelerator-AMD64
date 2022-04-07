@@ -8,7 +8,7 @@ Vision Accelerator - Hands-On-Lab
    
    Once you've logged into the Azure Portal, you can click I the upper left corner of the screen to bring up the menu, and then click add resource. From there you can either choose Virtual Machine, or the Ubuntu 18.04 Server VM option. (I’m using a VM with the SKU of Standard B4ms, which is the default for Ubuntu Server 18.04)
    
-   ![](C:\Users\Administrator\AppData\Roaming\marktext\images\2022-04-07-15-02-50-image.png)
+   ![](/hol_images/repo_download.JPG)
    
    
    
@@ -35,7 +35,7 @@ Vision Accelerator - Hands-On-Lab
    
    Now for the easiest portion of the HoL -- we're going to download a zip file of this repository.  Just click on the <>Code button and choose the Download Zip option.    On Windows, this will simply download into your Downloads folder - navigate to this folder, and move the zip to a folder of your choosing for your development environment. Go ahead and unzip the contents there.
    
-   ![](C:\Users\Administrator\AppData\Roaming\marktext\images\2022-04-07-15-18-40-image.png)
+   ![](/hol_images/repo_download.JPG)
    
    For the HoL, we'll be using VS Code  - if you don't have a this installed on your PC, it's free to download and use for any  OS, and and be found [here]([Download Visual Studio Code - Mac, Linux, Windows](https://code.visualstudio.com/download)).
    
