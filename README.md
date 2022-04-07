@@ -1,4 +1,4 @@
-# Manufacturing-Vision-Accelerator-AMD64
+# Manufacturing Vision Accelerator for AMD64 architectures
 Welcome to the Manufacuring Vision Accelerator repo - we hope what you find here may be helpful to your pursuit of vision analytics on the Edge!  
 
 This is a sample repository of working code - nothing more, nothing less.  There are no warranties or guarantees stated, or otherwise implied.
