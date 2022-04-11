@@ -1,6 +1,6 @@
 # Vision Accelerator - Hands-On-Lab 
 
-##1) Set up your Azure VM instance##
+## 1) Set up your Azure VM instance
    
    For this lab, we're going to create a non-GPU VM in Azure (you can also use a dGpu-based machine if you have want) To create a VM, you'll need an Azure subscription.  
    
@@ -31,7 +31,7 @@
    Copy the Public IP Address in the Overview blade, and save this to your text editor of choice. We’ll use this for accessing the VM remotely via a terminal emulator,
    i.e. TeraTerm or [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab).
 
-##2) Download Code##
+## 2) Download Code
    
    Now for the easiest portion of the HoL -- we're going to download a zip file of this repository.  Just click on the <>Code button and choose the Download Zip option.    On Windows, this will simply download into your Downloads folder - navigate to this folder, and move the zip to a folder of your choosing for your development environment. Go ahead and unzip the contents there.
    
@@ -41,9 +41,9 @@
    
    In VS Code, go the File -> Open Folder and choose the MANUFACTURING-VISION-ACCELERATOR-AMD64 folder.   This will open the project in your IDE, and we can now walk through the code to give you better idea of how the solution functions.
 
-##3) What exactly does each module do?##
+## 3) What exactly does each module do?
 
-###Mfg_Vision_CIS_Camera_1### <br>
+### Mfg_Vision_CIS_Camera_1 <br>
 This is the main module we'll be working with to connect to caputure, inference and store (CIS) analysis of individual frames.  This module also handles routing the inference and images to Azure in conjunction with the other modules.
 
 If you open this module folder you'll see three directories, capture, inference, and store.  If you click on capture, you'll see a few different options to choose from.  For machine vision systems in industrial environments, it's more common to see GVSP (GigE Vision Streaming Protocol), also known as GigE (gigabit) cameras, such as Allied Vision, Basler and others.  For convenience, we've included two examples, but you can easily integrate addtional camera SDKs as needed. (We'll cover the Dockerfile coniguration a bit later ih this section.)
