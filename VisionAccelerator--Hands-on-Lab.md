@@ -43,8 +43,14 @@
 
 3) What exactly does each module do?
 
-Mfg_Vision_CIS_Camera_1
-This is the main module we'll be working with to connect to caputure, inference and store (CIS) analysis of individual frames.   
+**Mfg_Vision_CIS_Camera_1**
+This is the main module we'll be working with to connect to caputure, inference and store (CIS) analysis of individual frames.  This module also handles routing the inference and images to Azure in conjunction with the other modules.
+
+If you open this module folder you'll see three directories, capture, inference, and store.  If you click on capture, you'll see a few different options to choose from.  For machine vision systems in industrial environments, it's more common to see GVSP (GigE Vision Streaming Protocol), also known as GigE (gigabit) cameras, such as Allied Vision, Basler and others.  For convenience, we've included two examples, but you can easily integrate addtional camera SDKs as needed. (We'll cover the Dockerfile coniguration a bit later ih this section.)
+
+We also included a simple OpenCV-based connector for RTSP (Real-Time Streaming Protocol), which is quite common for CCTV/Security cameras.
+
+The last option is for a file-based system, where the camera captures the image and simply stores it to a diretory. This 
 
 4) To DevOps or not to DevOps, that is the question?
 
