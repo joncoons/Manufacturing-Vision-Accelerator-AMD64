@@ -43,6 +43,9 @@
 
 3) What exactly does each module do?
 
+Mfg_Vision_CIS_Camera_1
+This is the main module we'll be working with to connect to caputure, inference and store (CIS) analysis of individual frames.   
+
 4) To DevOps or not to DevOps, that is the question?
 
 5) Train a model
