@@ -50,8 +50,17 @@ If you open this module folder you'll see three directories, capture, inference,
 
 We also included a simple OpenCV-based connector for RTSP (Real-Time Streaming Protocol), which is quite common for CCTV/Security cameras.
 
-The last option is for a file-based system, where the camera captures the image and simply stores it to a diretory. The python code works as a file watcher, processing the image when uploaded. This is the example we'll be using for this lab, as we won't have a physical camera connected.
+The last option is for a file-based system, where the camera captures the image and simply stores it to a diretory. The python code works as a file watcher, processing the image when uploaded. This is the example we'll be using for this lab, as we won't have a physical camera connected.  This code is also useful in a test environment as part of a CI/CD pipeline.
 
+To start into the code, let's look at the twin_call file. The purpose of this code is to create a connection to edgeHub or IoT Hub in Azure via 'IoTHubModuleClient.create_from_edge_environment()' and harvest the desired state twin information from the module twin in the 'twin_parse' function.  In the 'twin_to_config' function, we're saving the dictionary object into a pickle file, variables.pkl within the container at the /config directory.  
+
+![](/hol_images/twin_to_config.JPG)
+
+Within the deployment manifest, you'll also notice an entry in the "Mfg_Vision_CIS_Camera_1" module under "Binds" that references this directory also.  This effectively stores a copy of the variables.pkl in the 'edge_assets' directory that gets automatically created on your Edge device.
+
+![](/hol_images/dm_cis_cam_1.JPG)
+
+### Mfg_Vision_CIS_Camera_1 <br>
 
 
 
