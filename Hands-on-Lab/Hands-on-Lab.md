@@ -1,5 +1,12 @@
 # Vision Accelerator - Hands-On-Lab 
 
+### [1. Set up your Azure VM](sections/vm_setup.md)
+### [2. Set up your IoT Hub](sections/iothub_setup.md)
+### [3. Set up your Azure Container Registry](sections/acr_setup.md)
+### [4. Set up your CosmosDB](sections/cosmos_setup.md)
+### [5. Set up your Module Twin Configuration app](sections/configuration_tool_setup.md)
+
+
 ## 1) Set up your Azure VM instance
    
    For this lab, we're going to create a non-GPU VM in Azure (you can also use a dGpu-based machine if you have want) To create a VM, you'll need an Azure subscription.  
@@ -31,7 +38,27 @@
 
 ## 2) Set up IoT Hub
 
-In the portal, click in the upper left corner and select 'Create a resource,' and in the search window, enter 'IoT Hub'.  
+In the portal, click in the upper left corner and select 'Create a resource,' and in the search window, enter 'IoT Hub'.  In the drop down window, select IoT Hub, and select the 'Create' button on the next screen.
+
+In the 'Create a resource > IoT Hub' screen, select your subscription, if not already populated, and select the same Resource Group you used for the VM.  Enter a friendly name for your IoT Hub, and take note of this - we'll need it later on.  Copy the IoT Hub name you chose, and paste this into your text editor of choice.  Lastly, choose the Region you used for your VM. 
+
+For the purposes of the Lab, we're going to use the defaults for the remaining tabs, so just select 'Review + create' at the bottom of the screen.  Once validated, select 'Create' to deploy your instance of IoT Hub.
+
+Once this is created, select the 'Go to resource' link, which will navigate you to the IoT Hub.  In the left-hand navigation column for IoT Hub, select the 'Shared access policies' link.  Once this populates, select the 'iothubowner' link and copy the 'Primary connection string' from the pop-out blade.  Go ahead and paste this in the same text editor, as we'll need this in a later step.
+
+While we're in the IoT Hub resource, let's go ahead and set up our IoT Edge device.  In the left-hand navigation column, select IoT Edge, and then select the 'Add IoT Edge Device' link.  This will open a 'Create a device' blade where you can enter your Device ID.  Leave the Symmetric Key highlighted and the Connect this device to an IoT Hub enabled.  We won't be utilizing any child devices, so you can ignore this setting, and select the 'Save' button at the bottom of the screen.
+
+This will automatically navigate back to the IoT Edge device list, which should now have your new Edge device listed.  Select your device, and a new blade of device information will open, allowing you to copy the 'Primary Connection String' for your Edge device.  Go ahead and paste this into your text editor as well - we'll use it for provisioning in a later step.
+
+## 2) Set up an Azure Container Repository
+
+In the portal, click in the upper left corner and select 'Create a resource,' and in the search window, enter 'Container Registry'.  In the drop down window, select Container Registry, and select the 'Create' button on the next screen.
+
+In the 'Create a resource > Container Registry' screen, select your subscription, if not already populated, and select the same Resource Group you used for the VM.  Enter a friendly name for your ACR, and choose the Region you used for your VM.   For SKU, you can choose Standard, which is the default.
+
+For the purposes of the Lab, we're going to use the defaults for the remaining tabs, so just select 'Review + create' at the bottom of the screen.  Once validated, select 'Create' to deploy your instance of Azure Container Registry.
+
+Once this is created, select the 'Go to resource' link, which will navigate you to the ACR resource.  In the left-hand navigation column, select the 'Access keys' link, which will open new blade with the Registry name and Login server poluplated.  Toggle the 'Admin user' setting to enabled, which will now populate the Username and password/password2 fields.  We're going to copy the Login server, Username and password values over to our text editor for use later on, as we need to authenticate to the service before we can store containerized workloads.
 
 ## 3) Set up CosmosDB 
 
@@ -39,7 +66,7 @@ One of the unique challenges of connecting cameras on the Edge is the variabilit
 
 You can manage this variability through environment variables in the deployment manifest, but the length of the manifest could potentially become an issue, depending on how many cameras are configured.  The deployment manifest is actually part of the edgeAgent module twin (desired state), and is therefore subject to a 32kb limit for desired/reported states.
 
-To overcome this limitation, we've created an example python application which leverages flask, jinja2, flask-wtf forms and CosmosDB to create a 'desired-state' artifact for the individual module twin for each camera, which has its own 32kb allocation for 'desired-state.'  
+To overcome this limitation, we've created an example python application which leverages flask, jinja2, flask-wtf forms and CosmosDB to create a 'desired-state' artifact for the individual module twin for each camera, which then has its own 32kb allocation for 'desired-state.'  
 
 To set up CosmosDB, in the upper left-hand corner of the Azure Portal, select 'Create a resource,' just as you did to set up the VM.  On the 'Create a resource' blade, enter 'Azure Cosmos DB' in the search window, and select the 'Create' button.  In the API option window, selece Core(SQL) as your API choice, and select the 'Create' button.  
 
