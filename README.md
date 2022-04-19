@@ -3,6 +3,8 @@ Welcome to the Manufacuring Vision Accelerator repo - we hope what you find here
 
 This is a sample repository of working code - nothing more, nothing less.  There are no warranties or guarantees stated, or otherwise implied.
 
+[Click here to access the Hands-on-Lab](/Hands-on-Lab/Hands-on-Lab.md)
+
 # About our 'vision' 
 
 This project was built out of necessity - the need to provide for that 'last mile' connectivity of remote vision workloads while also solving for the unique challenges of these use cases.  Taking a 'code-first' approach across a number of deep engagements with multiple manufacturing customers, we began to see universal patterns emerge:
