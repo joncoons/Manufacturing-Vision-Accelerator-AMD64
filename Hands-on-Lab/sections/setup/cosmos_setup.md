@@ -1,5 +1,5 @@
 
-## 3) Set up CosmosDB 
+## 4) Set up CosmosDB 
 
 One of the unique challenges of connecting cameras on the Edge is the variability required, as each camera is bespoke in its own way.  Typically, there is a unique IP address, unique location, unique name and other inputs you may want to assign, such as model name and model version.  
 
@@ -17,4 +17,4 @@ Since we aren't concerned with the other blades for this Lab, we're going to sim
 
 Once the resource is created, choose 'Go to resource' as we're going to need a few details from Cosmos for our application.  On the Overview tab, which should be the default tab you navigated to, we'll need the URI for CosmosDB.  If you hover over the URI, a copy symbol will appear to the right.  Copy this and paste it into your text editor of choice, i.e. Notepad.  In the left-hand navigation column, choose Keys.  To access Cosmos and insert the module twin json artifact, we're going to need the Primary Key.  Copy this and put it into your text editor temporarily.
 
-[Back to HoL main](../Hands-on-Lab.md)
+[Back to HoL main](../../Hands-on-Lab.md)

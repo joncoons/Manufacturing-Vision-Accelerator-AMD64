@@ -1,5 +1,19 @@
 # Vision Accelerator - Hands-On-Lab 
 
+### Initial Setup Steps
+[1. Set up your Azure VM](sections/setup/vm_setup.md)
+[2. Set up your IoT Hub](sections/setup/iothub_setup.md)
+[3. Set up your Azure Container Registry](sections/setup/acr_setup.md)
+[4. Set up your CosmosDB](sections/setup/cosmos_setup.md)
+[5. Set up your Module Twin Configuration app](sections/setup/configuration_tool_setup.md)
+
+
+
+[Set up IoT Edge on your VM - External Link](https://docs.microsoft.com/en-us/azure/iot-edge/how-to-provision-single-device-linux-symmetric?view=iotedge-2020-11&tabs=azure-portal%2Cubuntu)
+
+
+### Initial Setup Steps
+
 ## 1) Set up your Azure VM instance
    
    For this lab, we're going to create a non-GPU VM in Azure (you can also use a dGpu-based machine if you have want) To create a VM, you'll need an Azure subscription.  

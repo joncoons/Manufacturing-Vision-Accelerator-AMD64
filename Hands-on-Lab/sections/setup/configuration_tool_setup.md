@@ -6,7 +6,7 @@ If you want an 'easy button' and don't want to build the application container, 
 
 In your web browser, open a window and navigate to 'http://localhost:22000'  This will open to the following screen: 
 
-![](../hol_images/module_config_1.JPG)
+![](../../hol_images/module_config_1.JPG)
 
 
-[Back to HoL main](../Hands-on-Lab.md)
+[Back to HoL main](../../Hands-on-Lab.md)

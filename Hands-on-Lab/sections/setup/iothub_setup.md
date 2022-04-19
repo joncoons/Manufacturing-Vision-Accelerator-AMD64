@@ -12,5 +12,5 @@ While we're in the IoT Hub resource, let's go ahead and set up our IoT Edge devi
 
 This will automatically navigate back to the IoT Edge device list, which should now have your new Edge device listed.  Select your device, and a new blade of device information will open, allowing you to copy the 'Primary Connection String' for your Edge device.  Go ahead and paste this into your text editor as well - we'll use it for provisioning in a later step.
 
-[Back to HoL main](../Hands-on-Lab.md)
+[Back to HoL main](../../Hands-on-Lab.md)
 

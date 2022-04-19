@@ -6,7 +6,7 @@
    
    Once you've logged into the Azure Portal, you can click I the upper left corner of the screen to bring up the menu, and then click add resource. From there you can either choose Virtual Machine, or the Ubuntu 18.04 Server VM option. (I’m using a VM with the SKU of Standard B4ms, which is the default for Ubuntu Server 18.04)
    
-   ![](../hol_images/azure_portal.JPG)
+   ![](../../hol_images/azure_portal.JPG)
     
    In the ‘Create a virtual machine’ blade, you will select your subscription, select or create your Resource Group, create a
    friendly name for your VM, choose the Region and availability options. Since this is temporary deployment, chose ‘No
@@ -26,4 +26,4 @@
    Copy the Public IP Address in the Overview blade, and save this to your text editor of choice. We’ll use this for accessing the VM remotely via a terminal emulator,
    i.e. TeraTerm or [Windows Terminal](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?activetab=pivot:overviewtab).
 
-[Back to HoL main](../Hands-on-Lab.md)
+[Back to HoL main](../../Hands-on-Lab.md)
