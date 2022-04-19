@@ -31,7 +31,9 @@ The original repo can be found at https://github.com/Azure-Samples/Custom-vision
 
 The 'inference' directory contains three files - two which handle the output tensor from Azure Custom Vision's ONNX export, and one that inteprets the output of a YOLOv5 object detection model, created in Azure Machine Learning AutoML for Images and exported to ONNX.
 
-Within the module folder, there are two Dockerfiles present - one for GPU acceleration using Nvidia and one for CPU acceleration for AVX2/AVX512 capable processors.  Within each of these are comments regarding which files to include/excluded depending on your target camera hardware.  Please note that to run any of the vision examples, you will need a processor capable of at least AVX2 (Advanced Vector Instruction)
+Within the module folder, there are two Dockerfiles present - one for GPU acceleration using Nvidia and one for CPU acceleration for AVX2/AVX512 capable processors.  Within each of these we've included comments regarding which lines to include/excluded depending on your target camera hardware.  
+
+Please note that to run any of the vision examples, you will need a processor capable of at least AVX (Advanced Vector Instruction Set), regardless of acceleration.  You may run into issues with older Intel NUC devices using Atom or Celeron processors which do not support this.  You can check [Intel's website] (https://www.intel.com/content/www/us/en/support/articles/000057621/processors.html) for more information, or run 'grep flags /proc/cpuinfo' in linux.
 
 
 
