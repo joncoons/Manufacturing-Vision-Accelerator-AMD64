@@ -14,5 +14,16 @@
 ### Solution Walkthrough - what exactly does each module do?
 
 [1. Mfg_Vision_CIS_Camera_1 module](sections/solution/cis_module.md)<br>
+[1. Mfg_Vision_Model_Repo module](sections/solution/model_repo.md)<br>
+[1. Mfg_Vision_Image_Upload module](sections/solution/image_upload.md)<br>
+[1. Mfg_Vision_File_Cleanup module](sections/solution/file_cleanup.md)<br>
+[1. Mfg_Vision_CIS_Dashboard_Custom module](sections/solution/custom_dashboard.md)<br>
+
+Utilities
+[1. Mfg_Vision_File_Upload_Utility module](sections/solution/upload_utility.md)<br>
+[1. Mfg_Vision_File_Download_Utility module](sections/solution/download_utility.md)<br>
+
+Optional Dashboard
+[1. Mfg_Vision_Dashboard_Grafana module](sections/solution/grafana_dashboard.md)<br>
 
 
