@@ -6,7 +6,7 @@ from azure.cosmos.partition_key import PartitionKey
 p_key = PartitionKey(path='/deviceId', kind='Hash')
 
 def cosmos_connect(db_name, uri, key, collection):
-    client = cosmos_client.CosmosClient(uri, {'masterKey': key} )
+    client = cosmos_client.CosmosClient(uri, key)
 
     db = client.create_database_if_not_exists(id=db_name)
     container = db.create_container_if_not_exists(id=collection, partition_key=p_key)
