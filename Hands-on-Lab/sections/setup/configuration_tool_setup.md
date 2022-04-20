@@ -35,7 +35,7 @@ For illustration, if I select one of the modules listed, a new form will open to
 
 The first two fields, 'Device Name' and 'Module Name,' will be automatically populated for you, but let's go through the remainder of the fields in the example form, which is 100% customizable, if you so choose:
 
-Camera Name (string) <br>
+#### Camera Name (string) <br>
 This is what every friendly name you want to give your camera.  This name will display on the custom dashboard.
 
 Camera URI (string)<br>
