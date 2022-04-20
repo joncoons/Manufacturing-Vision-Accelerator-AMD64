@@ -177,6 +177,7 @@ class RTSP_Camera():
                         print(f"Frame count = {self.frameCount}")
                         
                         self.frameRateCount = 0
+                        
                         FrameSave(frameFilePath, frame_optimized)
 
                         if self.storeRawFrames:
