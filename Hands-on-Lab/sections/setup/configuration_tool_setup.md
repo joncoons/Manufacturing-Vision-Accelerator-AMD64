@@ -33,6 +33,58 @@ For illustration, if I select one of the modules listed, a new form will open to
 
 ![](../../hol_images/module_config_5.JPG)
 
+The first two fields, 'Device Name' and 'Module Name,' will be automatically populated for you, but let's go through the remainder of the fields in the example form, which is 100% customizable, if you so choose:
+
+Camera Name (string) <br>
+This is what every friendly name you want to give your camera.  This name will display on the custom dashboard.
+
+Camera URI (string)
+Just as it states, this will be the URI or RTSP address if using an IP camera.
+
+Camera Location (string)
+This is a user-defined field, and is used for the image naming convention in the code.  This could be a physical address, manufacturing line id or other naming convention of your choosing.
+
+Camera Position (string)
+This is another user-defined descriptor, which could be the location on a line or angle of capture, i.e. top, bottom, side, etc.,
+
+Camera FPS (integer)
+If using a camera that doesn't have a hardware/software trigger, you simply input the number of frames per second the camera is capturing.  For instance, an RTSP demo camera might be capable of capturing 25 frames per second, so 25 would the value for this field.
+
+Inference FPS (float)
+If your installation doesn't have a trigger, and you typically don't want to inference every single frame, this field allows you to define how many frames per second are actually analyzed.  If you wanted to do less than one frame per second, you would plug in a decimal number, i.e. .2 for the value would mean one frame every five seconds is evaluated by the model.
+
+Model Name (string)
+This correlates to the diretory name of your model in the Mfg_Vision_Model_Repo module.  
+
+Model Version (integer)
+This refers to the version number inside of the model directory of the Mfg_Vision_Model_Repo module.
+
+Model Input Dimension (integer)
+This is the model dimension for the resolution the vision model was trained at.  For instance, the Azure Machine Learning AutoML for Images YOLOv5 algorithm defaults to 640 pixels, which is what the model expects for image size exactly.  This value is utilized by the frame_preprocess.py script in the Mfg_Vision_CIS_Camera_1 module to 'letterbox' the image, resizing the long side to 640 while adding a border if the image is not square.  For the Azure Custom Vision, this is trained at a resolution of 416 pixels, but is a bit mmore forgiviing when it comes to input size.  While the ACV model won't outright reject images of a different resolution, it still inferences correctly, but will create an error in the logs regarding the expected output tensor shape.
+
+Probability Threshold (float)
+This is the base confidence score for detecting an object or anomaly in your image.  This is expressed as a value between 0 and 1, i.e. .85 for 85%.
+
+IOU Threshold (float)
+Intersection/Union, also known as the Jaccard Index, is a measure of the overlap area between the predicted bounding box and the ground truth bounding box, and is used to evaluate the accuracy of the prediction.  The higher the threshold, the better the prediction.  This is expressed as a value between 0 and 1 as well, i.e. .45
+
+Retraining Interval (integer)
+
+MS SQL Database Name (string)
+
+MS SQL Database Password (string)
+
+Camera Type - Allied GVSP (boolean)
+Camera Type - Basler GVSP (boolean)
+Camera Type - RTSP (boolean)
+Camera Type - File Upload (boolean)
+Camera Trigger Installed (boolean)
+Model: Azure Custom Vision ONNX Export (boolean)
+Model: Azure ML YOLOv5 ONNX Export (boolean)
+Store Raw Frames (boolean)
+Store All Inferences (boolean)
+
+
 
 
 [Back to HoL main](../../Hands-on-Lab.md)
