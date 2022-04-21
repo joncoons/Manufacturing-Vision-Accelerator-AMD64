@@ -35,5 +35,7 @@ Within the module folder, there are two Dockerfiles present - one for GPU accele
 
 Please note that to run any of the vision examples, you will need a processor capable of at least AVX (Advanced Vector Instruction Set), regardless of acceleration.  You may run into issues with older Intel NUC devices using Atom or Celeron processors which do not support this.  You can check [Intel's website] (https://www.intel.com/content/www/us/en/support/articles/000057621/processors.html) for more information, or run 'grep flags /proc/cpuinfo' in linux.
 
+[Back to HoL main](../../Hands-on-Lab.md)
+
 
 
