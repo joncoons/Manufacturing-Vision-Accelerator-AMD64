@@ -1,12 +1,19 @@
 # Written by Jon Coons, Azure AI GBB at Microsoft.
 # To build the container, run the following line in a WSL2 terminal, or drop the sudo and run in PowerShell
 # sudo docker build -f Dockerfile.amd64 -t <your acr name>.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64 . && sudo docker push <your acr name>.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64
-# You can skip the docker push if you only need a local copy.
-# To run, simply execute 'sudo docker run -d -p 22000:22000 --rm -it <your acr name>.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64'.  The container will open up ephemeral port 22000, so use a browser to navigate to http://localhost:22000 if running locally.
+# You can skip the docker push if you only need a local copy.  I've created an anonymous pull in ACR for convenience:  docker pull visionaccelerator.azurecr.io/iot_edge_configuration_tool_local:0.0.1-amd64
+# To run, simply execute 'sudo docker run -d -p 22000:22000 --rm -it visionaccelerator.azurecr.io/iot_edge_configuration_tool_local:0.0.1-amd64'.  The container will open up ephemeral port 22394, so use a browser to navigate to http://localhost:22394 if running locally.
+# 
+# If you want to back up your configuration to a local directory, you can create a bind mount like this:
+#  sudo docker run -d -p 22000:22000 --rm -it --mount type=bind,src=<your_local_dir_path>,dst=/config visionaccelerator.azurecr.io/iot_edge_configuration_tool:0.0.1-amd64
 # 
 #  You can also run this locally by executing 'python3 aiot_edge_config.py' from the /app folder
+# 
+# Please note - this only runs on AMD64 architecture due to the CosmosDB dependency.
 
 FROM amd64/python:3.7-slim-buster
+
+RUN mkdir /config && chmod -R 777 /config
 
 RUN apt-get update
 RUN apt-get upgrade -y

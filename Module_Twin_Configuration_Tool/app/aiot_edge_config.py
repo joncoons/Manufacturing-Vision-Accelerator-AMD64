@@ -20,7 +20,7 @@ from wtforms.validators import DataRequired, Length, URL
 from aiot_device import get_edge_devices, get_edge_modules, get_module_twins, patch_module_twins, restart_module
 from aiot_cosmos import cosmos_create_items, cosmos_query_dm, cosmos_query_mt
 
-pkl_path = "/app/config/"
+pkl_path = "/config/"
 col_hub_updates = "edgemoduletwins"
 col_twin_updates = "edgetwinupdates"
 app = Flask(__name__)
@@ -74,13 +74,13 @@ def get_device_module(hub_own_str, cosmos_db, cosmos_uri, cosmos_key):
         try:
             m_list = get_edge_modules(hub_own_str)
             # print(d_list)
-            # print(m_list)
+            print(m_list)
             for kvp in m_list:
                 deviceId = kvp['deviceId']
                 moduleId = kvp['moduleId']
                 item = get_module_twins(hub_own_str, deviceId, moduleId)        
                 create_item = cosmos_create_items(cosmos_db, cosmos_uri, cosmos_key, col_hub_updates, item)        
-                # print(f'Cosmos item {create_item} for "{deviceId}-{moduleId}"')
+                print(f'Cosmos item {create_item} for "{deviceId}-{moduleId}"')
 
         except Exception as e:
             print(f"{e}\n Error in configuration information - please check and re-enter.")
@@ -107,7 +107,7 @@ def index():
 def main_list(): 
     config_name = request.args.get('config')    
     config = read_config(config_name)
-    # print(f"Stored config: {config}")
+    print(f"Stored config: {config}")
     hub_own_str = config["hub_own_str"]
     cosmos_db = config["cosmos_db"]
     cosmos_uri = config["cosmos_uri"]
@@ -116,12 +116,12 @@ def main_list():
     hub_poll = get_device_module(hub_own_str, cosmos_db, cosmos_uri, cosmos_key)
 
     d,m,dm = cosmos_query_dm(cosmos_db, cosmos_uri, cosmos_key, col_hub_updates)        
-    # print(f'Cosmos retrieved: \n {d} \n {dm}')
+    print(f'Cosmos retrieved: \n {d} \n {dm}')
     d_count = len(d)
     m_count = len(m)
     dm_count = len(dm)
         
-    # print(f"Device count: {d_count} Module count: {dm_count}")
+    print(f"Device count: {d_count} Module count: {dm_count}")
 
     return render_template('main_list.html', dm=dm, dm_count=dm_count, d = d, d_count=d_count, config_file=config_name)  
 
@@ -311,7 +311,7 @@ def twin_config():
         }
         
         create_item = cosmos_create_items(cosmos_db, cosmos_uri, cosmos_key, col_twin_updates, twin_cfg_dict)
-        # print(f'Cosmos item {create_item} for "{deviceId}-{moduleId}"')
+        print(f'Cosmos item {create_item} for "{deviceId}-{moduleId}"')
         create_patch = patch_module_twins(hub_own_str, deviceId, moduleId, twin_patch_dict)
                     
         if create_patch:
