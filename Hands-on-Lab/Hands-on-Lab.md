@@ -27,5 +27,5 @@ Optional Dashboard <br>
 [Mfg_Vision_Dashboard_Grafana module](sections/solution/grafana_dashboard.md)<br>
 
 Adding Additional Cameras <br>
-[Mfg_Vision_Dashboard_Grafana module](sections/solution/grafana_dashboard.md)<br>
+[Add another camera to your deployment](sections/solution/add_cameras.md)<br>
 
