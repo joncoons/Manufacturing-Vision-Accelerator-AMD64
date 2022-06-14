@@ -141,10 +141,42 @@ class Basler_GVSP_Camera:
                             tag_name = result['predictions'][i]['labelName']
                             probability = round(result['predictions'][i]['probability'],2)
                             bounding_box = result['predictions'][i]['bbox']
+                            
+                            # Workplace saftey detection example code
+                            # image_text = f"{probability}%"
+                            # color1 = (0, 0, 255)
+                            # color2 = (0, 255, 0)
+                            # thickness1 = 2
+                            # thickness2 = 1
+                            # if bounding_box:
+                            #     if self.modelACV:
+                            #         height, width, channel = annotated_frame.shape
+                            #         xmin = int(bounding_box["left"] * width)
+                            #         xmax = int((bounding_box["left"] * width) + (bounding_box["width"] * width))
+                            #         ymin = int(bounding_box["top"] * height)
+                            #         ymax = int((bounding_box["top"] * height) + (bounding_box["height"] * height))
+                            #         start_point = (xmin, ymin)
+                            #         end_point = (xmax, ymax)
+                            #         if tag_name == "no_hardhat" or tag_name == "no_safety_vest":
+                            #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color1, thickness1)
+                            #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .5, color = (0,0,255))
+                            #         else:
+                            #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color2, thickness2)
+                            #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .5, color = (0,255,0))
+                            #     else:
+                            #         start_point = (int(bounding_box["left"]), int(bounding_box["top"]))
+                            #         end_point = (int(bounding_box["width"]), int(bounding_box["height"]))
+                            #         if tag_name == "no_hardhat" or tag_name == "no_safety_vest":
+                            #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color1, thickness1)
+                            #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .5, color = (0,0,255))
+                            #         else:
+                            #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color2, thickness2)
+                            #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .5, color = (0,255,0))
+                                        
+                            # Defect Detection example code
                             image_text = f"{tag_name}@{probability}%"
                             color = (0, 255, 0)
                             thickness = 1
-
                             if bounding_box:
                                 if self.modelACV:
                                     height, width, channel = annotated_frame.shape

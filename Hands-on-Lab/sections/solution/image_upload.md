@@ -1,6 +1,6 @@
 ## Mfg_Vision_Image_Upload Module
 
-This module is handles the upload of images to your storage in Azure, and offers the flexibility of using Azure Blob Storage or Azure Data Lake Generation 2.  If you're utilizing Azure Machine Learning to train your models, it makes it incredibly simple to connect your data as a datastore.  You choose your path in the deployment manifest by setting a boolean value, and connection string.
+This module is handles the upload of images to your storage in Azure, and offers the flexibility of using either Azure Blob Storage or Azure Data Lake Generation 2.  If you're utilizing Azure Machine Learning to train your models, it makes it incredibly simple to connect your data as a datastore.  You choose your path in the deployment manifest by setting a boolean value, and connection string.
 
 Given the superior user experience with a hierarchichical namespace, Azure Data Lake Gen 2 is the route most popular, although you will need to establish a service principle in Azure AD to access service from AML.
 
@@ -10,7 +10,7 @@ The main.py file in this module is a light modification of the bootstrap code ge
 
 Based on the boolean value set in the deployment manifest, the code will either call the 'file_upload_adlv2.py' or the 'file_upload_blob.py' to execute.
 
-You can easily check your storage using the [Azure Storage Explorer](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=linux)<br><br>
+You can easily check your storage resource either in the portal or with the [Azure Storage Explorer](https://docs.microsoft.com/en-us/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=linux)<br><br>
 
 
 
