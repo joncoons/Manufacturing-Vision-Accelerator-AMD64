@@ -1,6 +1,7 @@
 FROM amd64/python:3.7-slim-buster
 
 RUN mkdir /models_temp && chmod 777 -R /models_temp
+RUN mkdir /model_volume && chmod -R 777 /model_volume
 
 COPY /models /models_temp
 
