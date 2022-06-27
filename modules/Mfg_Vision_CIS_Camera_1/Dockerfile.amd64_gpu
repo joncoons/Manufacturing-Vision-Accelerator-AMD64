@@ -1,5 +1,4 @@
-# FROM mcr.microsoft.com/azureml/onnxruntime-1.6-ubuntu18.04-py37-cpu-inference:latest
-FROM mcr.microsoft.com/azureml/onnxruntime:v1.5.2-cuda10.2-cudnn8
+FROM nvcr.io/nvidia/cuda:10.2-cudnn8-runtime-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 # Create folder structure for container
@@ -13,12 +12,20 @@ WORKDIR /app
 
 RUN apt-get update
 RUN apt-get install -y --no-install-recommends \
-    mlocate \
     python3.7 \
     python3-pip \
     python3-dev \
+    libopenblas-dev \
+    libpython3.7-dev \
     libcurl4-openssl-dev \
-    libboost-python-dev
+    libboost-python-dev \
+    cmake \
+    zip unzip \
+    libprotobuf-dev \
+    protobuf-compiler \
+    gcc \
+    g++ && \
+    rm -rf /var/lib/apt/lists/*
 
 # Comment out if not using Allied Vision camera
 COPY VimbaSDK/Vimba_v5.1_Linux64.tgz /opt
@@ -35,7 +42,8 @@ RUN apt-get install -y --no-install-recommends \
     gcc \
     build-essential \
     pkg-config \
-    gnupg
+    gnupg && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN apt update \
     && apt install -y curl apt-transport-https \
@@ -46,14 +54,9 @@ RUN apt update \
 
 # ONNX & ONNX runtime, OpenCV foundational packages
 RUN python3.7 -m pip install --upgrade pip wheel setuptools
-RUN python3.7 -m pip install cython numpy>=1.19.0 pillow
-RUN python3.7 -m pip install opencv-contrib-python-headless pyodbc
-RUN python3.7 -m pip install azure-iot-device~=2.7.0
-
+RUN python3.7 -m pip install cython numpy>=1.19.0 pillow onnxruntime-gpu==1.6.0 opencv-contrib-python-headless pyodbc azure-iot-device~=2.7.0
 
 # Comment out if not using ACV->ONNX
-RUN apt-get install -y --no-install-recommends \
-    cmake
 RUN python3.7 -m pip install onnx==1.8.0 
 
 # Comment out if not using YOLOv5->ONNX
@@ -78,9 +81,6 @@ RUN apt-get install ffmpeg libsm6 libxext6  -y
 # /////////////////////////////////////////
 
 COPY /app/ .
-
-# file indexer for mlocate - used with docker exec during debug
-RUN updatedb
 
 ENV LD_LIBRARY_PATH=/usr/local/cuda-10.2/lib64:$LD_LIBRARY_PATH
 ENV PATH=/usr/local/cuda-10.2/bin:$PATH
