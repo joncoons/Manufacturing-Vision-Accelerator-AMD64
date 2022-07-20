@@ -24,7 +24,10 @@ RUN apt-get install -y --no-install-recommends \
     libprotobuf-dev \
     protobuf-compiler \
     gcc \
-    g++ && \
+    g++ \
+    build-essential \
+    pkg-config \
+    gnupg && \
     rm -rf /var/lib/apt/lists/*
 
 # Comment out if not using Allied Vision camera
@@ -36,14 +39,6 @@ RUN echo "$GENICAM_GENTL64_PATH"
 RUN cd /opt/Vimba_5_1/Tools/Viewer/Bin/x86_64bit && chmod +x libVimbaC.so && chown root:root libVimbaC.so 
 RUN cp /opt/Vimba_5_1/Tools/Viewer/Bin/x86_64bit/libVimbaC.so /usr/lib/amd64-linux-gnu
 # //////////////////////////////////////////////////////////
-
-# Install MS SQL pre-requisites and drivers
-RUN apt-get install -y --no-install-recommends \
-    gcc \
-    build-essential \
-    pkg-config \
-    gnupg && \
-    rm -rf /var/lib/apt/lists/*
 
 RUN apt update \
     && apt install -y curl apt-transport-https \
