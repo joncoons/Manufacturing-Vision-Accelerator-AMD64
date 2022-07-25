@@ -1,5 +1,7 @@
 FROM amd64/python:3.7-slim-buster
-# Create folder structure and set permissions
+
+ARG DEBIAN_FRONTEND=noninteractive
+# Create folder structure for container
 # When combined with deployment manifest, an edge_assets directory will be created on the host device
 RUN mkdir /model_volume && chmod -R 777 /model_volume
 RUN mkdir /images_volume && chmod -R 777 /images_volume
@@ -9,13 +11,24 @@ RUN mkdir /config && chmod -R 777 /config
 WORKDIR /app
 
 RUN apt-get update
-RUN apt-get upgrade -y
 RUN apt-get install -y --no-install-recommends \
-    mlocate \
+    python3.7 \
     python3-pip \
     python3-dev \
+    libopenblas-dev \
+    libpython3.7-dev \
     libcurl4-openssl-dev \
-    libboost-python-dev     
+    libboost-python-dev \
+    cmake \
+    zip unzip \
+    libprotobuf-dev \
+    protobuf-compiler \
+    gcc \
+    g++ \
+    build-essential \
+    pkg-config \
+    gnupg && \
+    rm -rf /var/lib/apt/lists/*
 
 # Comment out if not using Allied Vision camera
 COPY VimbaSDK/Vimba_v5.1_Linux64.tgz /opt
@@ -27,57 +40,42 @@ RUN cd /opt/Vimba_5_1/Tools/Viewer/Bin/x86_64bit && chmod +x libVimbaC.so && cho
 RUN cp /opt/Vimba_5_1/Tools/Viewer/Bin/x86_64bit/libVimbaC.so /usr/lib/amd64-linux-gnu
 # //////////////////////////////////////////////////////////
 
-# Install MS SQL pre-requisites and drivers for pyodbc
-RUN apt-get install -y --no-install-recommends \
-    gcc \
-    build-essential \
-    pkg-config \
-    gnupg
-
-RUN apt-get update \
-    && apt-get install -y curl apt-transport-https \
+RUN apt update \
+    && apt install -y curl apt-transport-https \
     && curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list \
-    && apt-get update \
+    && curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+    && apt update \
     && ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
 
 # ONNX & ONNX runtime, OpenCV foundational packages
-RUN python3 -m pip install --upgrade pip wheel setuptools
-RUN python3 -m pip install cython numpy>=1.19.0 pillow 
-RUN python3 -m pip install onnxruntime>=1.6.0
-RUN python3 -m pip install opencv-contrib-python-headless pyodbc
-RUN python3 -m pip install azure-iot-device~=2.7.0 
+RUN python3.7 -m pip install --upgrade pip wheel setuptools
+RUN python3.7 -m pip install cython numpy>=1.19.0 pillow onnxruntime==1.9.0 opencv-contrib-python-headless pyodbc azure-iot-device~=2.7.0
 
 # Comment out if not using ACV->ONNX
-# RUN apt-get install -y --no-install-recommends \
-#     cmake
-# RUN python3 -m pip install onnx==1.8.0 
+RUN python3.7 -m pip install onnx==1.8.1
 
 # Comment out if not using YOLOv5->ONNX
-RUN python3 -m pip install torch torchvision
-RUN python3 -m pip install pandas tqdm PyYAML
-RUN python3 -m pip install scipy seaborn requests
-RUN python3 -m pip install pybind11 pytest protobuf
-RUN python3 -m pip install objdict
+RUN python3.7 -m pip install torch==1.8.1 torchvision==0.9.1
+RUN python3.7 -m pip install pandas tqdm PyYAML
+RUN python3.7 -m pip install scipy seaborn requests
+RUN python3.7 -m pip install pybind11 pytest protobuf
+RUN python3.7 -m pip install objdict
 
-# Comment out if not using Basler Camera
-RUN python3 -m pip install pypylon
+# Comment out if not using Basler
+RUN python3.7 -m pip install pypylon
 
 # Cleanup
 RUN rm -rf /var/lib/apt/lists/* \
     && apt-get -y autoremove
 
-
 # Vimba continued ///////////////////////////
 #Pulled from https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo
-RUN apt-get clean
 RUN apt-get update
-RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get install -y --no-install-recommends \
+    ffmpeg libsm6 libxext6  && \
+    rm -rf /var/lib/apt/lists/*
 # /////////////////////////////////////////
 
 COPY /app/ .
-
-# for mlocate update
-RUN updatedb
 
 CMD [ "python3", "-u", "./main.py" ]

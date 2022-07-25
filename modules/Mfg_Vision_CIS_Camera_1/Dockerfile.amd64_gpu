@@ -1,4 +1,4 @@
-FROM nvcr.io/nvidia/cuda:10.2-cudnn8-runtime-ubuntu18.04
+FROM nvcr.io/nvidia/cuda:11.4.2-cudnn8-runtime-ubuntu18.04
 
 ARG DEBIAN_FRONTEND=noninteractive
 # Create folder structure for container
@@ -49,13 +49,13 @@ RUN apt update \
 
 # ONNX & ONNX runtime, OpenCV foundational packages
 RUN python3.7 -m pip install --upgrade pip wheel setuptools
-RUN python3.7 -m pip install cython numpy>=1.19.0 pillow onnxruntime-gpu==1.6.0 opencv-contrib-python-headless pyodbc azure-iot-device~=2.7.0
+RUN python3.7 -m pip install cython numpy>=1.19.0 pillow onnxruntime-gpu==1.9.0 opencv-contrib-python-headless pyodbc azure-iot-device~=2.7.0
 
 # Comment out if not using ACV->ONNX
-RUN python3.7 -m pip install onnx==1.8.0 
+RUN python3.7 -m pip install onnx==1.8.1 
 
 # Comment out if not using YOLOv5->ONNX
-RUN python3.7 -m pip install torch torchvision
+RUN python3.7 -m pip install torch==1.8.1 torchvision==0.9.1
 RUN python3.7 -m pip install pandas tqdm PyYAML
 RUN python3.7 -m pip install scipy seaborn requests
 RUN python3.7 -m pip install pybind11 pytest protobuf
@@ -70,9 +70,10 @@ RUN rm -rf /var/lib/apt/lists/* \
 
 # Vimba continued ///////////////////////////
 #Pulled from https://stackoverflow.com/questions/55313610/importerror-libgl-so-1-cannot-open-shared-object-file-no-such-file-or-directo
-RUN apt-get clean
 RUN apt-get update
-RUN apt-get install ffmpeg libsm6 libxext6  -y
+RUN apt-get install -y --no-install-recommends \
+    ffmpeg libsm6 libxext6  && \
+    rm -rf /var/lib/apt/lists/*
 # /////////////////////////////////////////
 
 COPY /app/ .
