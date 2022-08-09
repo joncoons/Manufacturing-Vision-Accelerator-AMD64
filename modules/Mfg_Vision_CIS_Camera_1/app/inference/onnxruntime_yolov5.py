@@ -7,26 +7,10 @@ from datetime import datetime
 import torch
 from inference.utils.general import non_max_suppression
 
-# anchors = [[116, 90, 156, 198, 373, 326], [30, 61, 62, 45, 59, 119], [10, 13, 16, 30, 33, 23]]
-
-# providers = [
-#     ('CUDAExecutionProvider', {
-#         'device_id': 0,
-#         'arena_extend_strategy': 'kSameAsRequested ',
-#         'gpu_mem_limit': 2 * 1024 * 1024 * 1024,
-#         'cudnn_conv_algo_search': 'DEFAULT',
-#         'do_copy_in_default_stream': True,
-#     }),
-#     'CPUExecutionProvider',
-# ]
 providers = [
     'CUDAExecutionProvider',
     'CPUExecutionProvider',
 ]
-
-# provider = [
-#     'CPUExecutionProvider',
-# ]
 
 class ONNXRuntimeObjectDetection():
 
