@@ -38,6 +38,8 @@ class CaptureInferenceStore():
             initialize_acv(modelPath, labelPath)
         else:
             from inference.onnxruntime_yolov5 import initialize_yolov5
+            labelPath = f'/model_volume/{modelName}/{modelVersion}/labels.json'
+            labelFile = 'labels.json'
             initialize_yolov5(modelPath, labelPath, targetDim, probThres, iouThres)
         sleep(1)
 

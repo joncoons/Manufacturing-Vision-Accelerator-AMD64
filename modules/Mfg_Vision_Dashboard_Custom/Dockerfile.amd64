@@ -34,4 +34,4 @@ WORKDIR /app
 
 COPY /app/ .
 
-CMD [ "python3", "-u", "./edge_dashboard_sql.py" ]
+CMD [ "python3", "-u", "./edge_dashboard_sql_ppe.py" ]

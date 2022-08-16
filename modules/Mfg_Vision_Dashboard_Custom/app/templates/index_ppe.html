@@ -13,7 +13,7 @@
     <tr>
         {% for i in range(inf_count) %}
         <td valign="top">
-            <a href="{{ url_for('static', filename = 'images/'+inf_list[i]['annotated_image_name']) }}"><img src="{{ url_for('static', filename = 'images/'+inf_list[i]['annotated_image_name'] | default('default.jpg')) }}" alt="{{ inf_list[i]['annotated_image_name'] }}" width="300" height="300"></a>
+            <a href="{{ url_for('static', filename = 'images/'+inf_list[i]['annotated_image_name']) }}"><img src="{{ url_for('static', filename = 'images/'+inf_list[i]['annotated_image_name'] | default('default.jpg')) }}" alt="{{ inf_list[i]['annotated_image_name'] }}" width="300"></a>
         </td> 
         {% endfor %}
     </tr>

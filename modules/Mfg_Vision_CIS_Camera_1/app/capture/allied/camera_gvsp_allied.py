@@ -14,6 +14,7 @@ from capture.allied.vimba import *
 from capture.frame_preprocess import frame_resize
 from capture.frame_save import FrameSave
 from store.sql_insert import InsertInference
+from shapely.geometry import Polygon
 
 capturing = False
 
@@ -49,6 +50,8 @@ class Allied_GVSP_Camera:
         self.frameCount = 0
         self.frameRateCount = 0
         self.reconnectCam = True
+
+        self.work_boundary = [(0, 640), (0, 0), (220, 0), (220, 640)]
 
         self.streamCap()
 
@@ -179,8 +182,8 @@ class Allied_GVSP_Camera:
             print('{} acquired {}'.format(cam, frame), flush=True)
             print(f"[{datetime.now()}] Received frame {frame} for cap camera.")
             frame = np.frombuffer(frame._buffer, dtype=np.uint8).reshape(frame._frame.height, frame._frame.width)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BAYER_RG2RGB)
-            frame_optimized = frame_resize(frame, self.targetDim)
+            frame = cv2.cvtColor(frame, cv2.COLOR_BAYER_RG2BGR)
+            h, w = frame.shape[:2]
 
             if self.camTrigger:
                 pass
@@ -191,13 +194,22 @@ class Allied_GVSP_Camera:
                         pass   
             
             if self.modelACV:
+                frame_optimized = frame_resize(frame, self.targetDim, model = "acv")
                 from inference.onnxruntime_predict import predict_acv
                 pil_frame = Image.fromarray(frame_optimized)
                 result = predict_acv(pil_frame)
+                predictions = result['predictions']
+                frame_resized = frame_optimized.copy()
+                annotated_frame = frame_optimized.copy()
             else:
-                from inference.onnxruntime_yolov5 import predict_yolo
-                result = predict_yolo(frame_optimized)
-            # print(json.dumps(result))
+                frame_optimized, ratio, pad_list = frame_resize(frame, self.targetDim, model = "yolov5")
+                from inference.onnxruntime_yolov5 import predict_yolov5
+                result = predict_yolov5(frame_optimized, pad_list)
+                predictions = result['predictions'][0]
+                new_w = int(ratio[0]*w)
+                new_h = int(ratio[1]*h)
+                frame_resized = cv2.resize(frame, (new_w, new_h), interpolation=cv2.INTER_AREA)
+                annotated_frame = frame_resized.copy()
 
             now = datetime.now()
             created = now.isoformat()
@@ -205,15 +217,21 @@ class Allied_GVSP_Camera:
             filetime = now.strftime("%Y%d%m%H%M%S%f")
             annotatedName = f"{self.camLocation}-{self.camPosition}-{filetime}-annotated.jpg"
             annotatedPath = os.path.join('/images_volume', annotatedName)
-            frameFileName = f"{self.camLocation}-{self.camPosition}-{filetime}.jpg"
+            frameFileName = f"{self.camLocation}-{self.camPosition}-{filetime}-rawframe.jpg"
             frameFilePath = os.path.join('/images_volume', frameFileName)
-            retrainFileName = f"{self.camLocation}-{self.camPosition}-{filetime}.jpg"
+            retrainFileName = f"{self.camLocation}-{self.camPosition}-{filetime}-retrain.jpg"
             retrainFilePath = os.path.join('/images_volume', retrainFileName)
-            detection_count = len(result['predictions'])
-            t_infer = result["inference_time"]
-            print(f"Detection Count: {detection_count}")
+            
+            if result is not None:
+                print(json.dumps(result))
+
+            if predictions is not None:
+                detection_count = len(predictions)
+                t_infer = result["inference_time"]
+                print(f"Detection Count: {detection_count}")
 
             if detection_count > 0:
+                # t_route_iothub_begin = time.time()
                 inference_obj = {
                     'model_name': self.model_name,
                     'object_detected': 1,
@@ -226,28 +244,53 @@ class Allied_GVSP_Camera:
                     'inferencing_time': t_infer,
                     'created': created,
                     'unique_id': unique_id,
-                    'detected_objects': result['predictions']
+                    'detected_objects': predictions
                     }
 
                 sql_insert = InsertInference(Allied_GVSP_Camera.sql_state, self.SqlDb, self.SqlPwd, detection_count, inference_obj)
+                Allied_GVSP_Camera.sql_state = sql_insert                      
+                self.send_to_upstream(json.dumps(inference_obj))   
 
-                Allied_GVSP_Camera.sql_state = sql_insert 
-                print("Inserted record")                     
-
-                self.send_to_upstream(json.dumps(inference_obj))
-
-                annotated_frame = frame_optimized
+                # For establishing boundary area - comment out if not used
+                boundary_active = self.__convertStringToBool(os.environ['BOUNDARY_DETECTION'])
+                work_polygon = Polygon(self.work_boundary)
+                object_poly_list = []                          
 
                 for i in range(detection_count):
-                    tag_name = result['predictions'][i]['labelName']
-                    probability = round(result['predictions'][i]['probability'],2)
-                    bounding_box = result['predictions'][i]['bbox']
+                    bounding_box = predictions[i]['bbox']
+                    tag_name = predictions[i]['labelName']
+                    probability = round(predictions[i]['probability'],2)
+                    
+                    # /////////////////////////////////////
+                    # Simple object detection bounding box
+                    # 
+                    # image_text = f"{probability}%"
+                    color = (0, 255, 0)
+                    thickness = 1
+                    if bounding_box:
+                        if self.modelACV:
+                            height, width, channel = annotated_frame.shape
+                            xmin = int(bounding_box["left"] * width)
+                            xmax = int((bounding_box["left"] * width) + (bounding_box["width"] * width))
+                            ymin = int(bounding_box["top"] * height)
+                            ymax = int((bounding_box["top"] * height) + (bounding_box["height"] * height))
+                        else:
+                            xmin = int(bounding_box["left"])
+                            xmax = int(bounding_box["width"])
+                            ymin = int(bounding_box["top"])
+                            ymax = int(bounding_box["height"])
+                        start_point = (int(bounding_box["left"]), int(bounding_box["top"]))
+                        end_point = (int(bounding_box["width"]), int(bounding_box["height"]))
+                        annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color, thickness)
+                        # annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (255,0, 0))
 
-                    # Workplace saftey detection example code
+                    # /////////////////////////////////////
+                    # Simple workplace saftey PPE detection example code
+                    # 
                     # image_text = f"{probability}%"
                     # color1 = (0, 0, 255)
                     # color2 = (0, 255, 0)
-                    # thickness1 = 2
+                    # thickness1 = 1
                     # thickness2 = 1
                     # if bounding_box:
                     #     if self.modelACV:
@@ -260,43 +303,89 @@ class Allied_GVSP_Camera:
                     #         end_point = (xmax, ymax)
                     #         if tag_name == "no_hardhat" or tag_name == "no_safety_vest":
                     #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color1, thickness1)
-                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .5, color = (0,0,255))
+                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,0,255))
                     #         else:
                     #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color2, thickness2)
-                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .5, color = (0,255,0))
+                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,255,0))
                     #     else:
                     #         start_point = (int(bounding_box["left"]), int(bounding_box["top"]))
                     #         end_point = (int(bounding_box["width"]), int(bounding_box["height"]))
                     #         if tag_name == "no_hardhat" or tag_name == "no_safety_vest":
                     #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color1, thickness1)
-                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .5, color = (0,0,255))
+                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,0,255))
                     #         else:
                     #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color2, thickness2)
-                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .5, color = (0,255,0))
-                                
-                    # Defect Detection example code
-                    image_text = f"{tag_name}@{probability}%"
-                    color = (0, 255, 0)
-                    thickness = 1
-                    if bounding_box:
-                        if self.modelACV:
-                            height, width, channel = annotated_frame.shape
-                            xmin = int(bounding_box["left"] * width)
-                            xmax = int((bounding_box["left"] * width) + (bounding_box["width"] * width))
-                            ymin = int(bounding_box["top"] * height)
-                            ymax = int((bounding_box["top"] * height) + (bounding_box["height"] * height))
-                            start_point = (xmin, ymin)
-                            end_point = (xmax, ymax)
-                            annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color, thickness)
-                            annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .6, color = (255,0, 0))
-                        else:
-                            start_point = (int(bounding_box["left"]), int(bounding_box["top"]))
-                            end_point = (int(bounding_box["width"]), int(bounding_box["height"]))
-                            annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color, thickness)
-                            annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .6, color = (255,0, 0))
-                    
+                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,255,0))
+                        
+                    # /////////////////////////////////////
+                    # Object Detection for PPE with Boundary Area Identification
+                    #
+                    # image_text = f"{probability}%"
+                    # color1 = (0, 0, 255)
+                    # color2 = (0, 255, 0)
+                    # thickness1 = 1
+                    # thickness2 = 1
+                    # if bounding_box:
+                    #     if self.modelACV:
+                    #         height, width, channel = annotated_frame.shape
+                    #         xmin = int(bounding_box["left"] * width)
+                    #         xmax = int((bounding_box["left"] * width) + (bounding_box["width"] * width))
+                    #         ymin = int(bounding_box["top"] * height)
+                    #         ymax = int((bounding_box["top"] * height) + (bounding_box["height"] * height))
+                    #         start_point = (xmin, ymin)
+                    #         end_point = (xmax, ymax)
+                    #         if tag_name == "no_hardhat" or tag_name == "no_safety_vest":
+                    #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color1, thickness1)
+                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,0,255))
+                    #         else:
+                    #             annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color2, thickness2)
+                    #             annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,255,0))
+                    #     else:
+                    #         if boundary_active:
+                    #             poly_red = (0, 0, 255)
+                    #             poly_yellow = (0, 255, 255)
+                    #             poly_black = (0, 0, 0)
+                    #             poly_white = (255, 255, 255)
+                    #             point1 = (int(bounding_box["left"]), int(bounding_box["top"]))
+                    #             point2 = (int(bounding_box["width"]), int(bounding_box["top"]))
+                    #             point3 = (int(bounding_box["width"]), int(bounding_box["height"]))
+                    #             point4 = (int(bounding_box["left"]), int(bounding_box["height"]))
+                    #             object_boundary = [(point1),(point2), (point3), (point4)]
+                    #             print("object_boundary: ", object_boundary)
+                    #             object_polygon = Polygon(object_boundary)
+                    #             if object_polygon.intersects(work_polygon):
+                    #                 object_poly_list.append(object_boundary)
+                    #             start_point = (int(bounding_box["left"]), int(bounding_box["top"]))
+                    #             end_point = (int(bounding_box["width"]), int(bounding_box["height"]))
+                    #             if tag_name == "no_hardhat" or tag_name == "no_safety_vest":
+                    #                 annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color1, thickness1)
+                    #                 # annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,0,255))
+                    #             else:
+                    #                 annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color2, thickness2)
+                    #                 # annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,255,0))
+
+                    #         else:
+                    #             start_point = (int(bounding_box["left"]), int(bounding_box["top"]))
+                    #             end_point = (int(bounding_box["width"]), int(bounding_box["height"]))
+                    #             if tag_name == "no_hardhat" or tag_name == "no_safety_vest":
+                    #                 annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color1, thickness1)
+                    #                 annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,0,255))
+                    #             else:
+                    #                 annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color2, thickness2)
+                    #                 annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,255,0))
+                    # 
+                # Code for creating poligon overlay - comment out if not using boundary detection
+                # if len(object_poly_list) > 0:
+                #     cv2.polylines(annotated_frame, np.array([self.work_boundary]), False, poly_yellow, 3)
+                #     overlay = annotated_frame.copy()
+                #     poly_arr = np.array(object_poly_list)
+                #     print(f'Poly/NP Array: {poly_arr}')
+                #     # cv2.fillPoly(overlay, np.array([self.work_boundary]), poly_white)
+                #     cv2.fillPoly(overlay, poly_arr, poly_red)
+                #     alpha = 0.4
+                #     annotated_frame = cv2.addWeighted(overlay, alpha, annotated_frame, 1 - alpha, 0)
+            
                 FrameSave(annotatedPath, annotated_frame)
-                
                 annotated_msg = {
                     'fs_name': "images-annotated",
                     'img_name': annotatedName,
@@ -305,7 +394,7 @@ class Allied_GVSP_Camera:
                     'path': annotatedPath
                     }
                 self.send_to_upload(json.dumps(annotated_msg))
-        
+                
             elif self.storeAllInferences:
                 print("No object detected.")
                 inference_obj = {
@@ -320,19 +409,16 @@ class Allied_GVSP_Camera:
                     'inferencing_time': t_infer,
                     'created': created,
                     'unique_id': unique_id,
-                    'detected_objects': result['predictions']
+                    'detected_objects': predictions
                     }
 
                 sql_insert = InsertInference(Allied_GVSP_Camera.sql_state, self.SqlDb, self.SqlPwd, detection_count, inference_obj)
-
                 Allied_GVSP_Camera.sql_state = sql_insert            
+                self.send_to_upstream(json.dumps(inference_obj))
 
-                self.send_to_upstream(json.dumps(inference_obj))              
-            
             print(f"Frame count = {self.frameCount}")
-            
-            self.frameRateCount = 0
-            FrameSave(frameFilePath, frame_optimized)
+            FrameSave(frameFilePath, frame_resized)
+
             if self.storeRawFrames:
                 frame_msg = {
                     'fs_name': "images-frame",
@@ -355,3 +441,11 @@ class Allied_GVSP_Camera:
                 self.send_to_upload(json.dumps(retrain_msg))
 
         cam.queue_frame(src_frame)
+
+    def __convertStringToBool(self, env: str) -> bool:
+        if env in ['true', 'True', 'TRUE', '1', 'y', 'YES', 'Y', 'Yes']:
+            return True
+        elif env in ['false', 'False', 'FALSE', '0', 'n', 'NO', 'N', 'No']:
+            return False
+        else:
+            raise ValueError('Could not convert string to bool.')

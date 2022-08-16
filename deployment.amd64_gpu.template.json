@@ -22,7 +22,7 @@
           "edgeAgent": {
             "type": "docker",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-agent:1.2.6-linux-amd64",
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.2.10-linux-amd64",
               "createOptions": {
                 "HostConfig": {
                   "Binds": [
@@ -42,7 +42,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-hub:1.2.6-linux-amd64",
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.2.10-linux-amd64",
               "createOptions": {
                 "HostConfig": {
                   "Binds": [
@@ -98,7 +98,7 @@
                     "/home/edge_assets/images_volume:/images_volume",
                     "/home/edge_assets/model_volume:/model_volume",
                     "/home/edge_assets/image_sink_volume/Mfg_Vision_CIS_Camera_1:/image_sink_volume",
-                    "/home/edge_assets/cis_config/Mfg_Vision_CIS_Camera_1:/config"
+                    "/home/edge_assets/CIS_Config/Mfg_Vision_CIS_Camera_1:/config"
                   ],
                   "Mounts": [
                     {
@@ -113,6 +113,11 @@
                     }
                   ]
                 }
+              }
+            },
+            "env": {
+              "BOUNDARY_DETECTION": {
+                "value": "false"
               }
             }
           },
@@ -145,7 +150,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "visionaccelerator.azurecr.io/edgevision_image_upload:0.1.1.0-amd64",
+              "image": "${MODULES.Mfg_Vision_Image_Upload}",
               "createOptions": {
                 "NetworkingConfig": {
                   "EndpointsConfig": {
@@ -172,7 +177,7 @@
                 "value": "false"
               },
               "STORE_CONN_STR": {
-                "value": "${BLOB_CONN_STR}"
+                "value": "${STORAGE_CONN_STR}"
               }
             }
           },
@@ -182,7 +187,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "Mfg_Vision_File_Cleanup",
+              "image": "${MODULES.Mfg_Vision_File_Cleanup}",
               "createOptions": {
                 "NetworkingConfig": {
                   "EndpointsConfig": {
@@ -206,9 +211,62 @@
             },
             "env": {
               "RETENTION_POLICY_SECONDS": {
-                "value": "7200"
+                "value": "600"
               }
             }
+          },
+          "Mfg_Vision_File_Download_Utility": {
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_File_Download_Utility}",
+              "createOptions": {
+                "HostConfig":{
+                  "Binds": [
+                    "/home/edge_assets/file_download:/files"
+                    ]
+                }
+              }
+            },
+            "type": "docker",
+            "version": "1.0",
+            "env": {
+              "LOCAL_FILE_PATH": {
+                "value": "/files/"
+              },
+              "BLOB_CLOUD_CONNSTR": {
+                "value": "${STORAGE_CONN_STR}"
+              },
+              "BLOB_AZURE_FILE_DOWNLOAD_CONTAINER": {
+                "value": "files-to-edge"
+              }
+            },
+            "status": "running",
+            "restartPolicy": "always"
+          },
+          "Mfg_Vision_File_Upload_Utility": {
+            "settings": {
+              "image": "${MODULES.Mfg_Vision_File_Upload_Utility}",
+              "createOptions": {
+                "HostConfig":{
+                  "Binds": [
+                    "/home/edge_assets/file_upload:/files"]
+                }
+              }
+            },
+            "type": "docker",
+            "version": "1.0",
+            "env": {
+              "LOCAL_FILE_PATH": {
+                "value": "/files/"
+              },
+              "BLOB_LOCAL_CONNSTR": {
+                "value": "${STORAGE_CONN_STR}"
+              },
+              "BLOB_LOCAL_AZURE_FILE_CONTAINER": {
+                "value": "files-to-azure"
+              }
+            },
+            "status": "running",
+            "restartPolicy": "always"
           },
           "SQL_on_Edge": {
             "version": "1.0",
@@ -229,7 +287,7 @@
                     "SYS_PTRACE"
                   ],
                   "Binds": [
-                    "sqlvol10:/sqlvol10"
+                    "sqlvol10:/sqlvol1"
                   ],
                   "PortBindings": {
                     "1433/tcp": [
@@ -241,7 +299,7 @@
                   "Mounts": [
                     {
                       "Type": "volume",
-                      "Source": "sqlvol10",
+                      "Source": "sqlvol1",
                       "Target": "/var/opt/mssql"
                     }
                   ]
@@ -258,7 +316,7 @@
                 "value": "Y"
               },
               "MSSQL_SA_PASSWORD": {
-                "value": "Sm&8jZX*WSkJL2j%27XT"
+                "value": "Pa$$word321"
               },
               "MSSQL_LCID": {
                 "value": "1033"
@@ -338,7 +396,7 @@
                   "PortBindings": {
                     "80/tcp": [
                       {
-                        "HostPort": "22000"
+                        "HostPort": "23000"
                       }
                     ]
                   },
@@ -360,6 +418,12 @@
             "env": {
               "CAMS_TO_DISPLAY": {
                 "value": "2"
+              },
+              "MSSQL_DB": {
+                "value": "${MSSQL_DB}"
+              },
+              "MSSQL_SA_PASSWORD": {
+                "value": "${MSSQL_SA_PASSWORD}"
               }
             }
           },
@@ -380,12 +444,15 @@
                   "PortBindings": {
                     "80/tcp": [
                       {
-                        "HostPort": "23000"
+                        "HostPort": "22000"
                       }
                     ]
                   },
                   "IpcMode": "host",
-                  "NetworkMode": "host"
+                  "NetworkMode": "host",
+                  "Binds": [
+                    "/home/edge_assets/config_tool:/config"
+                  ]
                 }
               }
             }

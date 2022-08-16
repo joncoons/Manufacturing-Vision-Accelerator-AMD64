@@ -175,7 +175,7 @@ def svc_config():
         config_write.close()
         message = "Configuration saved - database and collections created."
 
-        hub_poll = get_device_module(hub_own_str, cosmos_db, cosmos_uri, cosmos_key)
+        # hub_poll = get_device_module(hub_own_str, cosmos_db, cosmos_uri, cosmos_key)
 
     return render_template('svc_config.html', form=form, message=message)
 

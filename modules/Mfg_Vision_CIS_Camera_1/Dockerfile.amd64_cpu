@@ -47,9 +47,13 @@ RUN apt update \
     && apt update \
     && ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc-dev
 
+# Shapely prereq
+RUN apt update && apt install -y --no-install-recommends \
+    libgeos-dev
+
 # ONNX & ONNX runtime, OpenCV foundational packages
 RUN python3.7 -m pip install --upgrade pip wheel setuptools
-RUN python3.7 -m pip install cython numpy>=1.19.0 pillow onnxruntime==1.9.0 opencv-contrib-python-headless pyodbc azure-iot-device~=2.7.0
+RUN python3.7 -m pip install cython numpy>=1.19.0 pillow onnxruntime==1.9.0 opencv-python-headless~=4.5.5 opencv-contrib-python-headless~=4.5.5 pyodbc azure-iot-device~=2.7.0
 
 # Comment out if not using ACV->ONNX
 RUN python3.7 -m pip install onnx==1.8.1
@@ -59,7 +63,7 @@ RUN python3.7 -m pip install torch==1.8.1 torchvision==0.9.1
 RUN python3.7 -m pip install pandas tqdm PyYAML
 RUN python3.7 -m pip install scipy seaborn requests
 RUN python3.7 -m pip install pybind11 pytest protobuf
-RUN python3.7 -m pip install objdict
+RUN python3.7 -m pip install objdict shapely
 
 # Comment out if not using Basler
 RUN python3.7 -m pip install pypylon

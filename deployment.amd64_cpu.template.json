@@ -22,7 +22,7 @@
           "edgeAgent": {
             "type": "docker",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-agent:1.2.6-linux-amd64",
+              "image": "mcr.microsoft.com/azureiotedge-agent:1.2.10-linux-amd64",
               "createOptions": {
                 "HostConfig": {
                   "Binds": [
@@ -42,7 +42,7 @@
             "status": "running",
             "restartPolicy": "always",
             "settings": {
-              "image": "mcr.microsoft.com/azureiotedge-hub:1.2.6-linux-amd64",
+              "image": "mcr.microsoft.com/azureiotedge-hub:1.2.10-linux-amd64",
               "createOptions": {
                 "HostConfig": {
                   "Binds": [
@@ -112,6 +112,11 @@
                   ]
                 }
               }
+            },
+            "env": {
+              "BOUNDARY_DETECTION": {
+                "value": "false"
+              }
             }
           },
           "Mfg_Vision_Model_Repo": {
@@ -124,7 +129,8 @@
               "createOptions": {
                 "HostConfig": {
                   "Binds": [
-                    "/home/edge_assets/model_volume:/model_volume"
+                    "/home/edge_assets/model_volume:/model_volume",
+                    "/home/edge_assets/test_images:/test_images"
                   ]
                 },
                 "Mounts": [
@@ -226,7 +232,7 @@
                 "value": "/files/"
               },
               "BLOB_CLOUD_CONNSTR": {
-                "value": "$S"
+                "value": "${STORAGE_CONN_STR}"
               },
               "BLOB_AZURE_FILE_DOWNLOAD_CONTAINER": {
                 "value": "files-to-edge"
@@ -280,7 +286,7 @@
                     "SYS_PTRACE"
                   ],
                   "Binds": [
-                    "sqlvol10:/sqlvol1"
+                    "sqlvol2:/sqlvol2"
                   ],
                   "PortBindings": {
                     "1433/tcp": [
@@ -292,7 +298,7 @@
                   "Mounts": [
                     {
                       "Type": "volume",
-                      "Source": "sqlvol1",
+                      "Source": "sqlvol2",
                       "Target": "/var/opt/mssql"
                     }
                   ]
@@ -309,7 +315,7 @@
                 "value": "Y"
               },
               "MSSQL_SA_PASSWORD": {
-                "value": "Pa$$word321"
+                "value": "${MSSQL_SA_PASSWORD}"
               },
               "MSSQL_LCID": {
                 "value": "1033"
@@ -389,7 +395,7 @@
                   "PortBindings": {
                     "80/tcp": [
                       {
-                        "HostPort": "22000"
+                        "HostPort": "23000"
                       }
                     ]
                   },
@@ -411,6 +417,12 @@
             "env": {
               "CAMS_TO_DISPLAY": {
                 "value": "2"
+              },
+              "MSSQL_DB": {
+                "value": "${MSSQL_DB}"
+              },
+              "MSSQL_SA_PASSWORD": {
+                "value": "${MSSQL_SA_PASSWORD}"
               }
             }
           },
@@ -431,7 +443,7 @@
                   "PortBindings": {
                     "80/tcp": [
                       {
-                        "HostPort": "23000"
+                        "HostPort": "22000"
                       }
                     ]
                   },

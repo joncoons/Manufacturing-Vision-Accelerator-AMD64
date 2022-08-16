@@ -11,13 +11,9 @@ from datetime import datetime
 from flask import Flask, render_template, redirect, url_for
 
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = '2ustLlKgYN7xxDKLiyw1a8vvN3GugWJZ'
-# Bootstrap(app)
-
-
 
 def sql_connect():
-    with pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};PORT=1433;SERVER=localhost;UID=SA;PWD=<your password>;DATABASE=DefectDB') as sql_conn:
+    with pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};PORT='+sql_port+';SERVER='+sql_server+';DATABASE='+sql_db+';UID='+sql_uid+';PWD='+ sql_pwd) as sql_conn:
         sql_conn.autocommit = True
         print("SQL connected")
         cursor = sql_conn.cursor()
@@ -68,11 +64,13 @@ def index():
     det_list = []
     now = datetime.now()
     utc_now = datetime.utcnow()
+    print(utc_now)
+    print(now)
     cams = q_camera() 
     for cam in cams:        
         inf_vals = q_inference(cam)
         inf_count = len(inf_vals)
-        # print(inf_count)
+        print(inf_count)
         for inf_val in inf_vals:
             inf_dict = list_to_dict(inf_keys, inf_val)
             inf_list.append(inf_dict)
@@ -92,9 +90,17 @@ if __name__ == '__main__':
 
     try:
         CAMS_TO_DISPLAY = int(os.environ["CAMS_TO_DISPLAY"])
+        sql_db = os.environ['MSSQL_DB']
+        sql_pwd = os.environ['MSSQL_SA_PASSWORD']
+        
     except ValueError as error:
         print(error)
         sys.exit(1)
+        
+    sql_server = 'localhost'
+    sql_port = '1433'
+    sql_uid = 'SA'
+    print('DRIVER={ODBC Driver 17 for SQL Server};PORT='+sql_port+';SERVER='+sql_server+';DATABASE='+sql_db+';UID='+sql_uid+';PWD='+ sql_pwd)
 
     app.run(host='0.0.0.0', port=23000)
 
