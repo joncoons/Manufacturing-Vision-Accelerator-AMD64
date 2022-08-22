@@ -210,7 +210,7 @@
             },
             "env": {
               "RETENTION_POLICY_SECONDS": {
-                "value": "600"
+                "value": "1800"
               }
             }
           },

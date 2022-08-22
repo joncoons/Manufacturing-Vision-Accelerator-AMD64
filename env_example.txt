@@ -1,0 +1,7 @@
+ACR_ADDR='your_acr_server'
+ACR_PWD='your_acr_password'
+ACR_UNAME='your_acr_username'
+CONTAINER_VERSION_TAG='0.1.1.0'
+MSSQL_DB='DefectDB'
+MSSQL_SA_PASSWORD='Sm&8jZX*WSkJL2j%27XT' (generated from online service, as this only impacts IoT Edge)
+STORAGE_CONN_STR='your_azure_storage_connection_string'
