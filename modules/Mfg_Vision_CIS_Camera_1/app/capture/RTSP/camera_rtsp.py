@@ -252,7 +252,7 @@ class RTSP_Camera():
                                 #                 annotated_frame = cv2.rectangle(annotated_frame, start_point, end_point, color2, thickness2)
                                 #                 annotated_frame = cv2.putText(annotated_frame, image_text, start_point, fontFace = cv2.FONT_HERSHEY_TRIPLEX, fontScale = .4, color = (0,255,0))
                                 # 
-                            # Code for creating poligon overlay - comment out if not using boundary detection
+                            # Code for creating polygon overlay - comment out if not using boundary detection
                             # if len(object_poly_list) > 0:
                             #     cv2.polylines(annotated_frame, np.array([self.work_boundary]), False, poly_yellow, 3)
                             #     overlay = annotated_frame.copy()

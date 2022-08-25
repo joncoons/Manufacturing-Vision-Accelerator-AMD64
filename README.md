@@ -4,6 +4,9 @@ Welcome to the Manufacuring Vision Accelerator repo - we hope what you find here
 This is a sample repository of working code - nothing more, nothing less.  There are no warranties or guarantees stated, or otherwise implied.
 
 
+[Architecture Walkthrough Video](/video/architectural_overview.mp4)
+
+
 [Demo Walkthrough Video](/video/Demo_Walkthrough.mp4)
 
 
@@ -14,6 +17,14 @@ This is a sample repository of working code - nothing more, nothing less.  There
 
 
 [Click here to access the Hands-on-Lab](/Hands-on-Lab/Hands-on-Lab.md)
+
+
+
+# Module Deep Dives
+
+[Part 1 - CIS (capture|inference|store) module](/video/cis_camera_module_part_1.mp4)
+
+[Part 2 - CIS (capture|inference|store) module](/video/cis_camera_module_part_2.mp4)
 
 
 # About our 'vision' 
