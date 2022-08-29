@@ -26,6 +26,18 @@ This is a sample repository of working code - nothing more, nothing less.  There
 
 [Part 2 - CIS (capture|inference|store) module](/video/cis_camera_module_part_2.mp4)
 
+[Module Twin Configuration Tool module](/video/module_twin_configuration.mp4)
+
+[Model Repo module](/video/model_repo.mp4)
+
+[Custom Dashboard module](/video/custom_dashboard.mp4)
+
+[Image Upload module](/video/image_upload.mp4)
+
+[File Cleanup module](/video/file_cleanup.mp4)
+
+[File Upload/Download Utiliy modules](/video/file_upload_download.mp4)
+
 
 # About our 'vision' 
 
