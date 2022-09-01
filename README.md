@@ -38,6 +38,43 @@ This is a sample repository of working code - nothing more, nothing less.  There
 
 [File Upload/Download Utiliy modules](/video/file_upload_download.mp4)
 
+As you get started on your journey with the Solution Accelerator, here are a few application notes to keep in mind:  
+    
+    1) Once you've deployed IoT Edge, you will need to either 'vi' or 'nano' into the /etc/docker/daemon.json - if this file doesn't exist, go ahead and create it.  in here, I recommend adding some implicit values that apply to all containers.  
+    
+    For CPU-only deployments, I would use something simlar to the following:
+
+    {
+        "dns": ["8.8.8.8"],
+        "log-driver": "json-file",
+        "log-opts": {
+            "max-size": "10m",
+            "max-file": "3"
+        }
+    }
+
+    For Nvidia GPU-based deployments, I would paste the following:
+
+        {
+        "dns": ["8.8.8.8"],
+        "default-runtime": "nvidia",
+        "runtimes": {
+            "nvidia": {
+                "path": "nvidia-container-runtime",
+                "runtimeArgs": []
+            }
+        },
+        "log-driver": "json-file",
+        "log-opts": {
+            "max-size": "10m",
+            "max-file": "3"
+        }
+    }
+
+    2) Once you've built and deployed the solution containers, a new directory at /home/edge_assets will be created on the Edge device.  If you want to use the sample models and images contained in this repository for testing, you will need to elevate the permissions of this directory by running:
+
+    sudo chmod -R 777 /home/edge_assets
+
 
 # About our 'vision' 
 
