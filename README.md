@@ -55,7 +55,7 @@ As you get started on your journey with the Solution Accelerator, here are a few
 
     For Nvidia GPU-based deployments, I would paste the following:
 
-        {
+    {
         "dns": ["8.8.8.8"],
         "default-runtime": "nvidia",
         "runtimes": {
